@@ -84,6 +84,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 			}
 		}
 	} else {
+		// find all the possible subpath from here onwards
 		subpath := []string{}
 		for k, _ := range t.Nodes {
 			subpath = append(subpath, k)

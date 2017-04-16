@@ -9,17 +9,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// flags
-var Verbose bool
-var Quiet bool
-
 func init() {
 	RootCmd.AddCommand(versionCmd)
-	RootCmd.AddCommand(portCmd)
-	RootCmd.AddCommand(ipCmd)
 
-	RootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
-	RootCmd.PersistentFlags().BoolVarP(&Quiet, "quiet", "q", false, "quiet output")
+	RootCmd.PersistentFlags().BoolVarP(&config.Config.Verbose, "verbose", "v", false, "verbose output")
+	RootCmd.PersistentFlags().BoolVarP(&config.Config.Quiet, "quiet", "q", false, "quiet output")
+	RootCmd.PersistentFlags().StringVarP(&config.Config.Addr, "ip", "i", "localhost", "IP address to listen on")
+	RootCmd.PersistentFlags().StringVarP(&config.Config.Port, "port", "p", "8080", "Port to listen on")
+	RootCmd.PersistentFlags().StringVarP(&config.Config.DescPath, "desc-path", "d", "./describe/", "Description file path")
 }
 
 var RootCmd = &cobra.Command{
@@ -38,34 +35,15 @@ var versionCmd = &cobra.Command{
 	},
 }
 
-var portCmd = &cobra.Command{
-	Use:   "port",
-	Short: "listening port of liRest",
-	Long:  `listening port of liRest`,
-	Run: func(cmd *cobra.Command, args []string) {
-		config.Config.Port = args[0]
-	},
-}
-
-var ipCmd = &cobra.Command{
-	Use:   "ip",
-	Short: "IP of liRest",
-	Long:  `IP of liRest`,
-	Run: func(cmd *cobra.Command, args []string) {
-		config.Config.Addr = args[0]
-	},
-}
-
 func RunRootCmd(cmd *cobra.Command, args []string) error {
-	if Verbose {
+	if config.Config.Verbose {
 		log.SetLevel(log.DebugLevel)
-	} else if Quiet {
+	} else if config.Config.Quiet {
 		log.SetLevel(log.FatalLevel)
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	log.Info("Running liRest in standalone mode")
 	lirest.Run()
 	return nil
 }

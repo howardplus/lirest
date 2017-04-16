@@ -10,6 +10,8 @@ type ConfigDefn struct {
 	Port     string
 	Security SecurityConfigDefn
 	DescPath string
+	Verbose  bool
+	Quiet    bool
 }
 
 var Config = ConfigDefn{Addr: "", Port: DefaultPort}
