@@ -1,0 +1,58 @@
+[
+{
+  "name": "cpu_info",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "filesystem",
+      "path": "/proc/cpuinfo"
+    },
+    "format": {
+      "type": "separator",
+      "delimiter": ":",
+      "multiline": true,
+      "multisection": true
+    }
+  },
+  "output": {
+    "path": "/proc/cpuinfo",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get CPU info",
+        "long": "Get CPU information from the system"
+      }
+    ]
+  }
+},
+{
+  "name": "memory_info",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "filesystem",
+      "path": "/proc/meminfo"
+    },
+    "format": {
+      "type": "separator",
+      "delimiter": ":",
+      "multiline": true,
+      "multisection": false
+    }
+  },
+  "output": {
+    "path": "/proc/meminfo",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get memory info",
+        "long": "Get memory information from the system"
+      }
+    ]
+  }
+}
+]
