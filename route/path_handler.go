@@ -3,7 +3,6 @@ package route
 import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
-	"github.com/howardplus/lirest/output"
 	"net/http"
 )
 
@@ -20,11 +19,15 @@ func (h *PathHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}).Debug("PathHandler")
 
 	// create response with links to subpath
-	subpath := []output.SubPath{}
+	subpath := []string{}
 	for _, sp := range h.SubPath {
-		subpath = append(subpath, output.SubPath{Path: sp})
+		subpath = append(subpath, sp)
 	}
 
+	// add title
+	data := make(map[string][]string, 1)
+	data["subpath"] = subpath
+
 	// encode it
-	json.NewEncoder(w).Encode(subpath)
+	json.NewEncoder(w).Encode(data)
 }

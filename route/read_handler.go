@@ -10,6 +10,7 @@ import (
 )
 
 type ReadHandler struct {
+	Name   string
 	Input  describe.DescriptionInput
 	Output []describe.DescriptionOutputDesc
 }
@@ -41,15 +42,19 @@ func (h *ReadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// create format converter
 	var conv source.Converter
-	if format.Type == "separator" {
+	switch format.Type {
+	case "separator":
 		conv = source.NewSeparatorConverter(format.Delimiter, format.Multiline, format.Multisection)
+	case "list":
+		conv = source.NewListConverter(h.Name, format.Header, format.Title, format.Multiline)
 	}
 
 	// read data from source
 	var extractor source.Extractor
-	if inputSource.Type == "filesystem" {
+	switch inputSource.Type {
+	case "filesystem":
 		extractor = source.NewFileSystemExtractor(inputSource.Path)
-	} else {
+	default:
 		encoder.Encode(util.NamedError{Str: "Internal error: unknown input type"})
 		return
 	}

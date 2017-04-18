@@ -43,7 +43,6 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 
 	output := make(map[string]interface{}, 10)
-
 	line := 0
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {

@@ -77,6 +77,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 			if desc.Readonly {
 				r.Methods(method).Path(desc.Output.Path).Handler(
 					&ReadHandler{
+						desc.Name,
 						desc.Input,
 						desc.Output.Descriptions})
 			} else {

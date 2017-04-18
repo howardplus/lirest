@@ -54,5 +54,87 @@
       }
     ]
   }
+},
+{
+  "name": "uptime",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "filesystem",
+      "path": "/proc/uptime"
+    },
+    "format": {
+      "type": "list",
+      "header": false,
+      "title": ["uptime(s)", "idle(s)"],
+      "multiline": false
+    }
+  },
+  "output": {
+    "path": "/proc/uptime",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get system up time",
+        "long": "Get system up and idle time"
+      }
+    ]
+  }
+},
+{
+  "name": "swaps",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "filesystem",
+      "path": "/proc/swaps"
+    },
+    "format": {
+      "type": "list",
+      "header": true,
+      "multiline": true
+    }
+  },
+  "output": {
+    "path": "/proc/swaps",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get swap spaces",
+        "long": "Get swap files"
+      }
+    ]
+  }
+},
+{
+  "name": "partitions",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "filesystem",
+      "path": "/proc/partitions"
+    },
+    "format": {
+      "type": "list",
+      "header": true,
+      "multiline": true
+    }
+  },
+  "output": {
+    "path": "/proc/partitions",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get partition blocks",
+        "long": "Get partition blocks allocation information"
+      }
+    ]
+  }
 }
 ]

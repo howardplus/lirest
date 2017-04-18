@@ -56,10 +56,12 @@ type DescriptionSource struct {
 }
 
 type DescriptionFormat struct {
-	Type         string `json:"type"`
-	Delimiter    string `json:"delimiter"`
-	Multiline    bool   `json:"multiline"`
-	Multisection bool   `json:"multisection"`
+	Type         string   `json:"type"`
+	Delimiter    string   `json:"delimiter"`
+	Header       bool     `json:"header"`
+	Title        []string `json:"title"`
+	Multiline    bool     `json:"multiline"`
+	Multisection bool     `json:"multisection"`
 }
 
 type DescriptionInput struct {
