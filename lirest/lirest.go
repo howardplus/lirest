@@ -8,11 +8,10 @@ import (
 	"net/http"
 )
 
-func Run() error {
+func Run(path string) error {
 
 	// retrieve descriptions which tell us how to build the routes
-	path := "./describe/"
-	desc, err := describe.ReadDescriptionPath(path, nil)
+	desc, err := describe.ReadDescriptionPath(path)
 	if err != nil {
 		log.Fatal(err.Error())
 		return err

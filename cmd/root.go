@@ -44,6 +44,6 @@ func RunRootCmd(cmd *cobra.Command, args []string) error {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	lirest.Run()
+	lirest.Run(config.Config.DescPath)
 	return nil
 }

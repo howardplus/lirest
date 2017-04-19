@@ -25,9 +25,12 @@ func (h *PathHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// add title
-	data := make(map[string][]string, 1)
-	data["subpath"] = subpath
+	data := make(map[string]interface{}, 1)
+	data["name"] = "subpath"
+	data["data"] = subpath
 
 	// encode it
-	json.NewEncoder(w).Encode(data)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "  ")
+	encoder.Encode(data)
 }

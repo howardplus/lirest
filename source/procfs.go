@@ -13,16 +13,16 @@ const (
 
 type AccessMode int
 
-type FileSystemExtractor struct {
+type ProcFSExtractor struct {
 	path string
 }
 
-func NewFileSystemExtractor(path string) *FileSystemExtractor {
-	return &FileSystemExtractor{path: path}
+func NewProcFSExtractor(path string) *ProcFSExtractor {
+	return &ProcFSExtractor{path: path}
 }
 
 // implements the Extractor interface
-func (e *FileSystemExtractor) Extract(conv Converter) (interface{}, error) {
+func (e *ProcFSExtractor) Extract(conv Converter) (interface{}, error) {
 	// open file from path
 	f, err := os.Open(e.path)
 	if err != nil {

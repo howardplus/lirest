@@ -12,14 +12,15 @@ import (
 // typical example is ':' separated
 // key: value
 type SeparatorConverter struct {
+	name         string
 	sep          string
 	multiline    bool
 	multisection bool
 }
 
 // create a new separator
-func NewSeparatorConverter(s string, ml bool, ms bool) *SeparatorConverter {
-	return &SeparatorConverter{sep: s, multiline: ml, multisection: ms}
+func NewSeparatorConverter(n string, s string, ml bool, ms bool) *SeparatorConverter {
+	return &SeparatorConverter{name: n, sep: s, multiline: ml, multisection: ms}
 }
 
 // single line, seperated by the separator
@@ -42,20 +43,25 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 // stream input, read line by line
 func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 
-	output := make(map[string]interface{}, 10)
+	output := make([]map[string]interface{}, 0)
+
+	section := 0
 	line := 0
+
+	// per-section output
+	output_s := make(map[string]interface{}, 10)
+
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		// TODO: multi-section requires a top level section title
-		/*
-			if c.multisection {
-				return nil, nil
-			}
-		*/
-
 		l := scanner.Text()
 
 		if l == "" {
+			log.Debug("empty line")
+			// for multi-section, an empty marks the end of a section
+			output = append(output, output_s)
+			// recreate the map
+			output_s = make(map[string]interface{}, 10)
+			section++
 			continue
 		}
 
@@ -71,15 +77,28 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 		}).Debug("converted")
 
 		// retrieve the data
-		line++
-		output[k] = v
+		output_s[k] = v
 
-		if !c.multiline && line == 1 {
+		if !c.multiline && line == 0 {
 			// single line source, done
-			return output, nil
+			return map[string]interface{}{
+				"name": c.name,
+				"data": output_s,
+			}, nil
 		}
+
+		line++
+	}
+
+	// there may not be an empty line at all
+	// in this case, take the entire section
+	if len(output) == 0 {
+		output = append(output, output_s)
 	}
 
 	// prepare the output
-	return output, nil
+	return map[string]interface{}{
+		"name": c.name,
+		"data": output,
+	}, nil
 }

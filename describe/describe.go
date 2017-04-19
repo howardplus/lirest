@@ -20,7 +20,7 @@ const (
 )
 
 var descStandardFiles []string = []string{
-	"filesystem",
+	"procfs",
 	"sysctl",
 }
 
@@ -46,7 +46,7 @@ func ReadDescriptions(r io.Reader) ([]Description, error) {
 }
 
 // select all files in path and read in descriptions
-func ReadDescriptionPath(path string, customFiles []string) (*DescDefn, error) {
+func ReadDescriptionPath(path string) (*DescDefn, error) {
 
 	descriptions := make(map[DescType][]Description, descTypeMax)
 
@@ -71,20 +71,10 @@ func ReadDescriptionPath(path string, customFiles []string) (*DescDefn, error) {
 
 		// custom description files
 		if dt == DescTypeInvalid {
-			for _, t := range customFiles {
-				if file.Name() == t+descFileExt {
-					dt = DescTypeCustom
-				}
-			}
+			dt = DescTypeCustom
 		}
 
-		// unknown file
-		if dt == DescTypeInvalid {
-			// skip unknown file
-			log.Warn("Unknown description file: ", file.Name())
-			continue
-		}
-
+		// read descriptions from file
 		f, err := os.Open(path + file.Name())
 		if err != nil {
 			return nil, &DescError{str: "Description file open error: " + err.Error()}
@@ -96,8 +86,11 @@ func ReadDescriptionPath(path string, customFiles []string) (*DescDefn, error) {
 			return nil, err
 		}
 
-		log.Info("Processed description file: ", file.Name())
 		descriptions[dt] = d
+
+		log.WithFields(log.Fields{
+			"file": file.Name(),
+		}).Info("Processed description file")
 	}
 
 	return &DescDefn{DescriptionMap: descriptions}, nil

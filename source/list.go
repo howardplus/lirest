@@ -23,7 +23,7 @@ func NewListConverter(n string, h bool, t []string, ml bool) *ListConverter {
 	return &ListConverter{name: n, header: h, title: t, multiline: ml}
 }
 
-func (c *ListConverter) ConvertLine(in string) (key string, value interface{}, err error) {
+func (c *ListConverter) ConvertLine(in string) (string, interface{}, error) {
 
 	// it can be either separated by space or tab
 	fields := strings.Fields(in)
@@ -94,7 +94,8 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 
 		if !c.multiline {
 			return map[string]interface{}{
-				c.name: output_l,
+				"name": c.name,
+				"data": output_l,
 			}, nil
 		} else if line != 0 || !c.header {
 			output = append(output, output_l)
@@ -105,6 +106,7 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 	}
 
 	return map[string]interface{}{
-		c.name: output,
+		"name": c.name,
+		"data": output,
 	}, nil
 }

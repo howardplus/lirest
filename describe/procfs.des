@@ -4,7 +4,7 @@
   "read-only": true,
   "input": {
     "source": {
-      "type": "filesystem",
+      "type": "procfs",
       "path": "/proc/cpuinfo"
     },
     "format": {
@@ -32,7 +32,7 @@
   "read-only": true,
   "input": {
     "source": {
-      "type": "filesystem",
+      "type": "procfs",
       "path": "/proc/meminfo"
     },
     "format": {
@@ -60,7 +60,7 @@
   "read-only": true,
   "input": {
     "source": {
-      "type": "filesystem",
+      "type": "procfs",
       "path": "/proc/uptime"
     },
     "format": {
@@ -88,7 +88,7 @@
   "read-only": true,
   "input": {
     "source": {
-      "type": "filesystem",
+      "type": "procfs",
       "path": "/proc/swaps"
     },
     "format": {
@@ -115,7 +115,7 @@
   "read-only": true,
   "input": {
     "source": {
-      "type": "filesystem",
+      "type": "procfs",
       "path": "/proc/partitions"
     },
     "format": {
@@ -133,6 +133,58 @@
         "method": "GET",
         "short": "Get partition blocks",
         "long": "Get partition blocks allocation information"
+      }
+    ]
+  }
+},
+{
+  "name": "version",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/version"
+    },
+    "format": {
+      "type": "asis",
+      "multiline": false
+    }
+  },
+  "output": {
+    "path": "/proc/version",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get system version",
+        "long": "Get system version full string"
+      }
+    ]
+  }
+},
+{
+  "name": "version_signature",
+  "read-only": true,
+  "input": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/version_signature"
+    },
+    "format": {
+      "type": "asis",
+      "multiline": false
+    }
+  },
+  "output": {
+    "path": "/proc/version_signature",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get system version signature",
+        "long": "Get system version signature full string"
       }
     ]
   }

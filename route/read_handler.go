@@ -18,6 +18,8 @@ type ReadHandler struct {
 func (h *ReadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "  ")
+
 	inputSource := h.Input.Source
 	format := h.Input.Format
 	tag := r.Header.Get(TagHeaderName)
@@ -44,16 +46,18 @@ func (h *ReadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var conv source.Converter
 	switch format.Type {
 	case "separator":
-		conv = source.NewSeparatorConverter(format.Delimiter, format.Multiline, format.Multisection)
+		conv = source.NewSeparatorConverter(h.Name, format.Delimiter, format.Multiline, format.Multisection)
 	case "list":
 		conv = source.NewListConverter(h.Name, format.Header, format.Title, format.Multiline)
+	case "asis":
+		conv = source.NewAsisConverter(h.Name, format.Multiline)
 	}
 
 	// read data from source
 	var extractor source.Extractor
 	switch inputSource.Type {
-	case "filesystem":
-		extractor = source.NewFileSystemExtractor(inputSource.Path)
+	case "procfs":
+		extractor = source.NewProcFSExtractor(inputSource.Path)
 	default:
 		encoder.Encode(util.NamedError{Str: "Internal error: unknown input type"})
 		return
