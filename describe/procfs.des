@@ -146,7 +146,9 @@
       "path": "/proc/version"
     },
     "format": {
-      "type": "asis",
+      "type": "regex",
+      "regex": "(.*?) version (.*?)[ \\t]\\((.*?@.*?)\\)[ \\t]\\((.*)\\)[ \\t](.*)",
+      "title": ["os-type", "kernel-release", "username", "gcc-version", "kernel-version"],
       "multiline": false
     }
   },

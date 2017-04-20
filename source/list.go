@@ -29,7 +29,7 @@ func (c *ListConverter) ConvertLine(in string) (string, interface{}, error) {
 	fields := strings.Fields(in)
 
 	// there is no key in a list
-	return "list", fields, nil
+	return "", fields, nil
 }
 
 func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {

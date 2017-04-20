@@ -1,6 +1,7 @@
 package source
 
 import (
+	"github.com/howardplus/lirest/describe"
 	"io"
 	"strings"
 )
@@ -20,4 +21,20 @@ type Converter interface {
 // TODO: just a plain string for now
 func ConvertValue(s string) interface{} {
 	return strings.Trim(s, " \t")
+}
+
+func NewConverter(name string, format describe.DescriptionFormat) Converter {
+	switch format.Type {
+	case "separator":
+		return NewSeparatorConverter(name, format.Delimiter, format.Multiline, format.Multisection)
+	case "list":
+		return NewListConverter(name, format.Header, format.Title, format.Multiline)
+	case "regex":
+		return NewRegexConverter(name, format.Regex, format.Title, format.Multiline)
+	case "asis":
+		return NewAsisConverter(name, format.Multiline)
+	}
+
+	// default is as-is
+	return NewAsisConverter(name, format.Multiline)
 }

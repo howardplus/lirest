@@ -5,7 +5,6 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/describe"
 	"github.com/howardplus/lirest/source"
-	"github.com/howardplus/lirest/util"
 	"net/http"
 )
 
@@ -43,23 +42,12 @@ func (h *ReadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// create format converter
-	var conv source.Converter
-	switch format.Type {
-	case "separator":
-		conv = source.NewSeparatorConverter(h.Name, format.Delimiter, format.Multiline, format.Multisection)
-	case "list":
-		conv = source.NewListConverter(h.Name, format.Header, format.Title, format.Multiline)
-	case "asis":
-		conv = source.NewAsisConverter(h.Name, format.Multiline)
-	}
+	conv := source.NewConverter(h.Name, format)
 
 	// read data from source
-	var extractor source.Extractor
-	switch inputSource.Type {
-	case "procfs":
-		extractor = source.NewProcFSExtractor(inputSource.Path)
-	default:
-		encoder.Encode(util.NamedError{Str: "Internal error: unknown input type"})
+	extractor, err := source.NewExtractor(inputSource)
+	if err != nil {
+		encoder.Encode(err)
 		return
 	}
 

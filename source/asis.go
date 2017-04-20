@@ -19,7 +19,7 @@ func NewAsisConverter(n string, ml bool) *AsisConverter {
 }
 
 func (c *AsisConverter) ConvertLine(in string) (string, interface{}, error) {
-	return "asis", in, nil
+	return "", in, nil
 }
 
 func (c *AsisConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {

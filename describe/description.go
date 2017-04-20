@@ -60,6 +60,7 @@ type DescriptionFormat struct {
 	Delimiter    string   `json:"delimiter"`
 	Header       bool     `json:"header"`
 	Title        []string `json:"title"`
+	Regex        string   `json:"regex"`
 	Multiline    bool     `json:"multiline"`
 	Multisection bool     `json:"multisection"`
 }

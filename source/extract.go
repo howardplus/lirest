@@ -1,5 +1,10 @@
 package source
 
+import (
+	"github.com/howardplus/lirest/describe"
+	"github.com/howardplus/lirest/util"
+)
+
 // an extractor returns a generic data based
 // on the converter.
 // An object that implements the Extract() interface needs
@@ -7,4 +12,21 @@ package source
 // converter.
 type Extractor interface {
 	Extract(conv Converter) (interface{}, error)
+}
+
+func NewExtractor(source describe.DescriptionSource) (Extractor, error) {
+	var extractor Extractor = nil
+
+	switch source.Type {
+	case "procfs":
+		extractor = NewProcFSExtractor(source.Path)
+	}
+
+	// found an extractor, use it
+	if extractor != nil {
+		return extractor, nil
+	}
+
+	// return error on default
+	return nil, &util.NamedError{Str: "Internal error: unknown input type"}
 }
