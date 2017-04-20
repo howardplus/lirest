@@ -57,7 +57,7 @@ func TestColonSeparator(t *testing.T) {
 	}
 
 	s5 := "foobar"
-	k, v, err = sep1.ConvertLine(s5)
+	_, _, err = sep1.ConvertLine(s5)
 	if err == nil {
 		t.Error("test", s5, "expect", "error", "got", err)
 	}

@@ -26,7 +26,7 @@ func NewSeparatorConverter(n string, s string, ml bool, ms bool) *SeparatorConve
 }
 
 // ConvertLine
-// single line, seperated by the separator
+// single line, separated by the separator
 func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface{}, err error) {
 	parts := strings.Split(strings.Trim(in, " \t"), c.sep)
 
