@@ -91,12 +91,15 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 	}
 
 	// there may not be an empty line at all
-	// in this case, take the entire section
+	// in this case, take the entire section as output
 	if len(output) == 0 {
-		output = append(output, output_s)
+		return map[string]interface{}{
+			"name": c.name,
+			"data": output_s,
+		}, nil
 	}
 
-	// prepare the output
+	// otherwise, prepare the multi-section output
 	return map[string]interface{}{
 		"name": c.name,
 		"data": output,
