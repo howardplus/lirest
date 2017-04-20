@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// Run starts the lirest server
 func Run(path string) error {
 
 	// retrieve descriptions which tell us how to build the routes
@@ -39,8 +40,8 @@ func Run(path string) error {
 	r := route.NewRouter(trie)
 
 	// all done, start the server
-	log.Info("Running liRest server on " + config.Config.Addr + ":" + config.Config.Port)
-	log.Fatal(http.ListenAndServe(config.Config.Addr+":"+config.Config.Port, r))
+	log.Info("Running liRest server on " + config.GetConfig().Addr + ":" + config.GetConfig().Port)
+	log.Fatal(http.ListenAndServe(config.GetConfig().Addr+":"+config.GetConfig().Port, r))
 
 	return nil
 }

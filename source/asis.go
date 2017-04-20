@@ -7,6 +7,7 @@ import (
 	"io"
 )
 
+// AsisConverter
 // "As-is" converter takes all the data as is
 // this is the default converter
 type AsisConverter struct {
@@ -14,14 +15,17 @@ type AsisConverter struct {
 	multiline bool
 }
 
+// NewAsisConverter
 func NewAsisConverter(n string, ml bool) *AsisConverter {
 	return &AsisConverter{name: n, multiline: ml}
 }
 
+// ConvertLine
 func (c *AsisConverter) ConvertLine(in string) (string, interface{}, error) {
 	return "", in, nil
 }
 
+// ConvertStream
 func (c *AsisConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)

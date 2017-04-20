@@ -5,7 +5,7 @@ import (
 	"github.com/howardplus/lirest/util"
 )
 
-// an extractor returns a generic data based
+// Extractor returns a generic data based
 // on the converter.
 // An object that implements the Extract() interface needs
 // to know where to get the data, which then feeds to the
@@ -14,8 +14,9 @@ type Extractor interface {
 	Extract(conv Converter) (interface{}, error)
 }
 
+// Create a new extractor based on the description
 func NewExtractor(source describe.DescriptionSource) (Extractor, error) {
-	var extractor Extractor = nil
+	var extractor Extractor
 
 	switch source.Type {
 	case "procfs":

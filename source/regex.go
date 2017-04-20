@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// regex converter runs a regex on a single line
+// RegexConverter runs a regex on a single line
 // with multi-line, the same regex is applied to each line
 // example: /proc/version contains 5 parts:
 // 1. os type
@@ -24,6 +24,7 @@ type RegexConverter struct {
 	multiline bool
 }
 
+// NewRegexConverter
 func NewRegexConverter(n string, x string, title []string, ml bool) *RegexConverter {
 	return &RegexConverter{
 		name:      n,
@@ -33,12 +34,14 @@ func NewRegexConverter(n string, x string, title []string, ml bool) *RegexConver
 	}
 }
 
+// ConvertLine
 func (c *RegexConverter) ConvertLine(in string) (string, interface{}, error) {
 	// just let regex do its thing
 	groups := c.regex.FindStringSubmatch(in)
 	return "", groups, nil
 }
 
+// ConvertStream
 func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)
@@ -48,7 +51,7 @@ func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 	for scanner.Scan() {
 		l := scanner.Text()
 
-		data_l := map[string]string{}
+		dataLine := map[string]string{}
 
 		_, v, _ := c.ConvertLine(l)
 
@@ -65,12 +68,12 @@ func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 			val := strings.Trim(g, " \t\n")
 
 			if i == 0 {
-				data_l["full"] = val
+				dataLine["full"] = val
 			} else {
 				if len(c.title) == 0 {
-					data_l[strconv.Itoa(i)] = val
+					dataLine[strconv.Itoa(i)] = val
 				} else {
-					data_l[c.title[i-1]] = val
+					dataLine[c.title[i-1]] = val
 				}
 			}
 		}
@@ -78,11 +81,11 @@ func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 		if line == 0 && !c.multiline {
 			return map[string]interface{}{
 				"name": c.name,
-				"data": data_l,
+				"data": dataLine,
 			}, nil
 		}
 
-		data = append(data, data_l)
+		data = append(data, dataLine)
 		line++
 	}
 

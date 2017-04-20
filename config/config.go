@@ -1,10 +1,14 @@
 package config
 
-const (
-	DefaultPort = "8080"
+import (
+	"sync"
 )
 
-/* configuration definition */
+const (
+	DefaultPort = "8080" // the default port lirest listens on
+)
+
+// configuration definition
 type ConfigDefn struct {
 	Addr     string
 	Port     string
@@ -14,4 +18,16 @@ type ConfigDefn struct {
 	Quiet    bool
 }
 
-var Config = ConfigDefn{Addr: "", Port: DefaultPort}
+var instance *ConfigDefn
+var once sync.Once
+
+// The singleton config instance
+func GetConfig() *ConfigDefn {
+	once.Do(func() {
+		instance = &ConfigDefn{
+			Addr: "",
+			Port: DefaultPort,
+		}
+	})
+	return instance
+}

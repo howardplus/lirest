@@ -12,18 +12,19 @@ import (
 func init() {
 	RootCmd.AddCommand(versionCmd)
 
-	RootCmd.PersistentFlags().BoolVarP(&config.Config.Verbose, "verbose", "v", false, "verbose output")
-	RootCmd.PersistentFlags().BoolVarP(&config.Config.Quiet, "quiet", "q", false, "quiet output")
-	RootCmd.PersistentFlags().StringVarP(&config.Config.Addr, "ip", "i", "localhost", "IP address to listen on")
-	RootCmd.PersistentFlags().StringVarP(&config.Config.Port, "port", "p", "8080", "Port to listen on")
-	RootCmd.PersistentFlags().StringVarP(&config.Config.DescPath, "desc-path", "d", "./describe/", "Description file path")
+	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Verbose, "verbose", "v", false, "verbose output")
+	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Quiet, "quiet", "q", false, "quiet output")
+	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Addr, "ip", "i", "localhost", "IP address to listen on")
+	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Port, "port", "p", "8080", "Port to listen on")
+	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().DescPath, "desc-path", "d", "./describe/", "Description file path")
 }
 
+// Define the root command
 var RootCmd = &cobra.Command{
 	Use:   "lirest",
 	Short: "liRest exposes Linux operating system using REST API",
 	Long:  "liRest exposes Linux operating system using REST API",
-	RunE:  RunRootCmd,
+	RunE:  runRootCmd,
 }
 
 var versionCmd = &cobra.Command{
@@ -31,19 +32,19 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number of liRest",
 	Long:  `All software has versions. This is liRest's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("liRest v%d.%d\n", util.Version.Major, util.Version.Minor)
+		fmt.Printf("liRest v%d.%d\n", util.GetVersion().Major, util.GetVersion().Minor)
 	},
 }
 
-func RunRootCmd(cmd *cobra.Command, args []string) error {
-	if config.Config.Verbose {
+func runRootCmd(cmd *cobra.Command, args []string) error {
+	if config.GetConfig().Verbose {
 		log.SetLevel(log.DebugLevel)
-	} else if config.Config.Quiet {
+	} else if config.GetConfig().Quiet {
 		log.SetLevel(log.FatalLevel)
 	} else {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	lirest.Run(config.Config.DescPath)
+	lirest.Run(config.GetConfig().DescPath)
 	return nil
 }

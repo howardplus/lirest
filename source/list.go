@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// ListConverter
 // list are values that are listed in either
 // a single line, or multi-line
 // for example:
@@ -19,10 +20,14 @@ type ListConverter struct {
 	multiline bool
 }
 
+// NewListConverter
+// Create a list converter
 func NewListConverter(n string, h bool, t []string, ml bool) *ListConverter {
 	return &ListConverter{name: n, header: h, title: t, multiline: ml}
 }
 
+// ConvertLine
+// Convert a line
 func (c *ListConverter) ConvertLine(in string) (string, interface{}, error) {
 
 	// it can be either separated by space or tab
@@ -32,6 +37,8 @@ func (c *ListConverter) ConvertLine(in string) (string, interface{}, error) {
 	return "", fields, nil
 }
 
+// ConvertStream
+// Convert from a io.Reader
 func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 
 	// output is a slice of map of title to value
@@ -41,7 +48,7 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 	line := 0
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		output_l := make(map[string]string, 10) // per line output
+		outputLine := make(map[string]string, 10) // per line output
 
 		l := scanner.Text()
 		if l == "" {
@@ -89,16 +96,16 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 			}).Debug("Add Title")
 
 			// output with title
-			output_l[title[col]] = val
+			outputLine[title[col]] = val
 		}
 
 		if !c.multiline {
 			return map[string]interface{}{
 				"name": c.name,
-				"data": output_l,
+				"data": outputLine,
 			}, nil
 		} else if line != 0 || !c.header {
-			output = append(output, output_l)
+			output = append(output, outputLine)
 		}
 
 		// done. next line

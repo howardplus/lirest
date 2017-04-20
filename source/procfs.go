@@ -7,21 +7,24 @@ import (
 )
 
 const (
-	ModeReadOnly = iota
-	ModeReadWrite
+	ModeReadOnly  = iota // read-only value
+	ModeReadWrite        // writable value
 )
 
+// AccessMode: either read or write
 type AccessMode int
 
+// ProcFSExtractor
 type ProcFSExtractor struct {
 	path string
 }
 
+// NewProcFSExtractor
 func NewProcFSExtractor(path string) *ProcFSExtractor {
 	return &ProcFSExtractor{path: path}
 }
 
-// implements the Extractor interface
+// Extract implements the Extractor interface
 func (e *ProcFSExtractor) Extract(conv Converter) (interface{}, error) {
 	// open file from path
 	f, err := os.Open(e.path)

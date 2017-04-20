@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Trie
 // trie data structure to keep the route relationships
 // this is created from the descriptions
 // and used to create routes
@@ -15,15 +16,18 @@ type Trie struct {
 }
 
 const (
-	RouteDefaultCount = 5
+	routeDefaultCount = 5
 )
 
+// NewTrie
+// Create the trie root
 func NewTrie() *Trie {
 	return &Trie{
 		Val:   nil,
-		Nodes: make(map[string]*Trie, RouteDefaultCount)}
+		Nodes: make(map[string]*Trie, routeDefaultCount)}
 }
 
+// AddPath
 // add a path to the Trie
 // a path contains slash separated strings such as
 // /a/b/c/d/e
@@ -59,7 +63,7 @@ func (t *Trie) AddPath(path string, val interface{}) error {
 			// not found, create it
 			n.Nodes[key] = &Trie{
 				Val:   v,
-				Nodes: make(map[string]*Trie, RouteDefaultCount)}
+				Nodes: make(map[string]*Trie, routeDefaultCount)}
 			n = n.Nodes[key]
 		}
 	}
@@ -85,10 +89,14 @@ func (t *Trie) depthN(depth int) int {
 	return max
 }
 
+// Depth
+// find the depth of the trie
 func (t *Trie) Depth() int {
 	return t.depthN(0)
 }
 
+// Count
+// counts the number of nodes in the trie
 func (t *Trie) Count() int {
 	i := 1
 	for _, v := range t.Nodes {

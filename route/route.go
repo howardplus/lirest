@@ -5,11 +5,11 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
 	"github.com/howardplus/lirest/describe"
-	_ "github.com/howardplus/lirest/util"
 	"github.com/urfave/negroni"
 	"net/http"
 )
 
+// NewRouter
 // the router is defined hierarchically
 // starting from the top level
 func NewRouter(t *Trie) http.Handler {
@@ -87,7 +87,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 	} else {
 		// find all the possible subpath from here onwards
 		subpath := []string{}
-		for k, _ := range t.Nodes {
+		for k := range t.Nodes {
 			subpath = append(subpath, k)
 		}
 

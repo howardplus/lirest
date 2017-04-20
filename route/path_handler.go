@@ -6,10 +6,13 @@ import (
 	"net/http"
 )
 
+// PathHandler contains slice of next level subpath
 type PathHandler struct {
 	SubPath []string
 }
 
+// ServeHTTP
+// the HTTP handler
 func (h *PathHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	log.WithFields(log.Fields{

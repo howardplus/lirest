@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 // URL that starts with underscore are special tags
@@ -12,20 +13,23 @@ import (
 // _man: manual page (human-readable format) for this url
 
 const (
-	TagInfo = "_info"
-	TagMan  = "_man"
+	TagInfo = "_info" // describes the REST API usage
+	TagMan  = "_man"  // man page
 
-	TagHeaderName = "X-LIREST-TAG"
+	TagHeaderName = "X-LIREST-TAG" // the HTTP tag used for the tag
 
-	TagMax = 2
+	tagMax = 2
 )
 
 var TagSupported map[string]http.HandlerFunc
+var once sync.Once
 
 func init() {
-	TagSupported = make(map[string]http.HandlerFunc, TagMax)
-	TagSupported[TagInfo] = InfoHandler
-	TagSupported[TagMan] = ManHandler
+	once.Do(func() {
+		TagSupported = make(map[string]http.HandlerFunc, tagMax)
+		TagSupported[TagInfo] = InfoHandler
+		TagSupported[TagMan] = ManHandler
+	})
 }
 
 // return the tag
@@ -42,7 +46,7 @@ func checkTag(tag string) http.HandlerFunc {
 	return nil
 }
 
-// Tag middleware handles the special tags
+// TagMiddleware handles the special tags
 func TagMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	// the tag always appear on the last part
@@ -58,6 +62,8 @@ func TagMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 	next(w, r)
 }
 
+// InfoHandler
+// the handler when info tag is found
 func InfoHandler(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"path": r.URL.Path,
@@ -69,6 +75,8 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 	r.URL.Path = r.URL.Path[0:idx]
 }
 
+// ManHandler
+// the handler when man tag is found
 func ManHandler(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"path": r.URL.Path,

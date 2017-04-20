@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// SeparatorConverter:
 // separated by a character
 // typical example is ':' separated
 // key: value
@@ -18,11 +19,13 @@ type SeparatorConverter struct {
 	multisection bool
 }
 
+// NewSeparatorConverter
 // create a new separator
 func NewSeparatorConverter(n string, s string, ml bool, ms bool) *SeparatorConverter {
 	return &SeparatorConverter{name: n, sep: s, multiline: ml, multisection: ms}
 }
 
+// ConvertLine
 // single line, seperated by the separator
 func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface{}, err error) {
 	parts := strings.Split(strings.Trim(in, " \t"), c.sep)
@@ -40,6 +43,7 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 	return key, value, nil
 }
 
+// ConvertStream
 // stream input, read line by line
 func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
 
@@ -49,7 +53,7 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 	line := 0
 
 	// per-section output
-	output_s := make(map[string]interface{}, 10)
+	outputSection := make(map[string]interface{}, 10)
 
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
@@ -58,9 +62,9 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 		if l == "" {
 			log.Debug("empty line")
 			// for multi-section, an empty marks the end of a section
-			output = append(output, output_s)
+			output = append(output, outputSection)
 			// recreate the map
-			output_s = make(map[string]interface{}, 10)
+			outputSection = make(map[string]interface{}, 10)
 			section++
 			continue
 		}
@@ -77,13 +81,13 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 		}).Debug("converted")
 
 		// retrieve the data
-		output_s[k] = v
+		outputSection[k] = v
 
 		if !c.multiline && line == 0 {
 			// single line source, done
 			return map[string]interface{}{
 				"name": c.name,
-				"data": output_s,
+				"data": outputSection,
 			}, nil
 		}
 
@@ -95,7 +99,7 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 	if len(output) == 0 {
 		return map[string]interface{}{
 			"name": c.name,
-			"data": output_s,
+			"data": outputSection,
 		}, nil
 	}
 

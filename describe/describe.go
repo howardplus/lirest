@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	DescTypeInvalid = iota
-	DescTypeStandard
-	DescTypeCustom
+	descTypeInvalid  = iota // invalid description type
+	DescTypeStandard        // standard description
+	DescTypeCustom          // custom description
 
 	descTypeMax = 2
 
@@ -24,20 +24,25 @@ var descStandardFiles []string = []string{
 	"sysctl",
 }
 
+// DescType
 type DescType int
 
+// DescError
 type DescError struct {
 	str string
 }
 
+// Error
+// the description error
 func (d *DescError) Error() string {
 	return d.str
 }
 
+// ReadDescriptions
 // read in descriptions from a input, typically a file
 // this is a thin wrapper whose purpose is for this to be testable
 func ReadDescriptions(r io.Reader) ([]Description, error) {
-	var output []Description = nil
+	var output []Description
 	if err := json.NewDecoder(r).Decode(&output); err != nil {
 		return nil, &DescError{str: "Desciption read error: " + err.Error()}
 	}
@@ -45,6 +50,7 @@ func ReadDescriptions(r io.Reader) ([]Description, error) {
 	return output, nil
 }
 
+// ReadDescriptionPath
 // select all files in path and read in descriptions
 func ReadDescriptionPath(path string) (*DescDefn, error) {
 
@@ -62,7 +68,7 @@ func ReadDescriptionPath(path string) (*DescDefn, error) {
 		}
 
 		// standard description files
-		var dt DescType = DescTypeInvalid
+		var dt DescType = descTypeInvalid
 		for _, fn := range descStandardFiles {
 			if file.Name() == fn+descFileExt {
 				dt = DescTypeStandard
@@ -70,7 +76,7 @@ func ReadDescriptionPath(path string) (*DescDefn, error) {
 		}
 
 		// custom description files
-		if dt == DescTypeInvalid {
+		if dt == descTypeInvalid {
 			dt = DescTypeCustom
 		}
 

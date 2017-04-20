@@ -8,12 +8,16 @@ import (
 	"net/http"
 )
 
+// ReadHandler
+// Describe a read-only handler
 type ReadHandler struct {
 	Name   string
 	Input  describe.DescriptionInput
 	Output []describe.DescriptionOutputDesc
 }
 
+// ServeHTTP
+// ReadHandler's HTTP handler function
 func (h *ReadHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	encoder := json.NewEncoder(w)
