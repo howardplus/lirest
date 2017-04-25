@@ -63,26 +63,25 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 
 		log.WithFields(log.Fields{
 			"name":    desc.Name,
-			"methods": desc.Output.Methods,
-			"path":    desc.Output.Path,
+			"methods": desc.Api.Methods,
+			"path":    desc.Api.Path,
 		}).Debug("Route description")
 
-		for _, method := range desc.Output.Methods {
+		for _, method := range desc.Api.Methods {
 
 			log.WithFields(log.Fields{
-				"path": fullpath.String(),
-			}).Debug("Install handler")
+				"method":   method,
+				"path":     fullpath.String(),
+				"api-path": desc.Api.Path,
+			}).Debug("Install resource handler")
 
-			// create route handlers
-			if desc.Readonly {
-				r.Methods(method).Path(desc.Output.Path).Handler(
-					&ReadHandler{
-						desc.Name,
-						desc.Input,
-						desc.Output.Descriptions})
-			} else {
-				r.Methods(method).Path(desc.Output.Path).HandlerFunc(SimpleHandler)
-			}
+			// create resource handlers
+			r.Methods(method).Path(desc.Api.Path).Handler(
+				&ResourceHandler{
+					desc.Name,
+					desc.System,
+					desc.Api.Descriptions,
+				})
 		}
 	} else {
 		// find all the possible subpath from here onwards

@@ -1,20 +1,44 @@
 [
 {
+  "name": "cmdline",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/cmdline"
+    },
+    "rd-format": {
+      "type": "asis",
+      "multiline": false
+    }
+  },
+  "api": {
+    "path": "/proc/cmdline",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get kernel command line",
+        "long": "Get kernel bootup command argument"
+      }
+    ]
+  }
+},
+{
   "name": "cpu_info",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/cpuinfo"
     },
-    "format": {
+    "rd-format": {
       "type": "separator",
       "delimiter": ":",
       "multiline": true,
       "multisection": true
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/cpuinfo",
     "methods": ["GET"],
     "descriptions":
@@ -29,20 +53,19 @@
 },
 {
   "name": "memory_info",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/meminfo"
     },
-    "format": {
+    "rd-format": {
       "type": "separator",
       "delimiter": ":",
       "multiline": true,
       "multisection": false
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/meminfo",
     "methods": ["GET"],
     "descriptions": 
@@ -57,20 +80,19 @@
 },
 {
   "name": "uptime",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/uptime"
     },
-    "format": {
+    "rd-format": {
       "type": "list",
       "header": false,
       "title": ["uptime(s)", "idle(s)"],
       "multiline": false
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/uptime",
     "methods": ["GET"],
     "descriptions": 
@@ -85,19 +107,18 @@
 },
 {
   "name": "swaps",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/swaps"
     },
-    "format": {
+    "rd-format": {
       "type": "list",
       "header": true,
       "multiline": true
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/swaps",
     "methods": ["GET"],
     "descriptions": 
@@ -112,19 +133,18 @@
 },
 {
   "name": "partitions",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/partitions"
     },
-    "format": {
+    "rd-format": {
       "type": "list",
       "header": true,
       "multiline": true
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/partitions",
     "methods": ["GET"],
     "descriptions": 
@@ -139,20 +159,19 @@
 },
 {
   "name": "version",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/version"
     },
-    "format": {
+    "rd-format": {
       "type": "regex",
       "regex": "(.*?) version (.*?)[ \\t]\\((.*?@.*?)\\)[ \\t]\\((.*)\\)[ \\t](.*)",
       "title": ["os-type", "kernel-release", "username", "gcc-version", "kernel-version"],
       "multiline": false
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/version",
     "methods": ["GET"],
     "descriptions": 
@@ -167,18 +186,17 @@
 },
 {
   "name": "version_signature",
-  "read-only": true,
-  "input": {
+  "system": {
     "source": {
       "type": "procfs",
       "path": "/proc/version_signature"
     },
-    "format": {
+    "rd-format": {
       "type": "asis",
       "multiline": false
     }
   },
-  "output": {
+  "api": {
     "path": "/proc/version_signature",
     "methods": ["GET"],
     "descriptions": 

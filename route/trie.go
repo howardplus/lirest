@@ -36,7 +36,7 @@ func (t *Trie) AddPath(path string, val interface{}) error {
 	tokens := strings.Split(path, "/")
 
 	if len(tokens) == 0 {
-		return &util.NamedError{Str: "Unknown path"}
+		return util.NewError("Unknown path")
 	}
 
 	n := t
@@ -57,7 +57,7 @@ func (t *Trie) AddPath(path string, val interface{}) error {
 			n = elem
 			if v != nil {
 				// duplicate leaf node
-				return &util.NamedError{Str: "Duplicate path"}
+				return util.NewError("Duplicate path")
 			}
 		} else {
 			// not found, create it

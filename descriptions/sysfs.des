@@ -1,0 +1,36 @@
+[
+{
+  "name": "version_signature",
+  "system": {
+    "source": {
+      "type": "sysfs",
+      "path": "/sys/test"
+    },
+    "rd-format": {
+      "type": "asis",
+      "multiline": false
+    },
+    "wr-format": {
+      "type": "asis",
+      "multiline": false
+    }
+  },
+  "api": {
+    "path": "/sys/test",
+    "methods": ["GET", "PUT"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get system version signature",
+        "long": "Get system version signature full string"
+      },
+      {
+        "method": "PUT",
+        "short": "Set system version signature",
+        "long": "Set system version signature full string"
+      }
+    ]
+  }
+}
+]

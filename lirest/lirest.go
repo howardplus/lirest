@@ -11,25 +11,32 @@ import (
 // Run starts the lirest server
 func Run(path string) error {
 
+	var defn describe.DescDefn
+
 	// retrieve descriptions which tell us how to build the routes
-	desc, err := describe.ReadDescriptionPath(path)
-	if err != nil {
+	if err := describe.ReadDescriptionPath(path, &defn); err != nil {
 		log.Fatal(err.Error())
 		return err
 	}
 
+	// retrieve built-in descriptions for the /proc/sys directory
+	describe.ReadSysctlDescriptions(&defn)
+
 	// create a route trie for all the paths
 	trie := route.NewTrie()
-	standards := desc.DescriptionMap[describe.DescTypeStandard]
-	for _, s := range standards {
-		output := s.Output
-		if err := trie.AddPath(output.Path, s); err != nil {
+	defns := defn.DescriptionMap[describe.DescTypeStandard]
+	defns = append(defns, defn.DescriptionMap[describe.DescTypeSysctl]...)
+	for _, s := range defns {
+		api := s.Api
+		if err := trie.AddPath(api.Path, s); err != nil {
 			log.WithFields(log.Fields{
-				"path": output.Path,
+				"path": api.Path,
 			}).Error(err.Error())
 			continue
 		}
 	}
+
+	// TODO: exclude paths
 
 	log.WithFields(log.Fields{
 		"depth": trie.Depth(),

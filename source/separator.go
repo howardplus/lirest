@@ -31,7 +31,7 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 	parts := strings.Split(strings.Trim(in, " \t"), c.sep)
 
 	if len(parts) != 2 {
-		return "", nil, &util.NamedError{Str: "Insufficient parts of a separator line"}
+		return "", nil, util.NewError("Insufficient parts of a separator line")
 	}
 
 	// now gets the key and value

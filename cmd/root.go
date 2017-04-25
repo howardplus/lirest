@@ -16,7 +16,7 @@ func init() {
 	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Quiet, "quiet", "q", false, "quiet output")
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Addr, "ip", "i", "localhost", "IP address to listen on")
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Port, "port", "p", "8080", "Port to listen on")
-	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().DescPath, "desc-path", "d", "./describe/", "Description file path")
+	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().DescPath, "desc-path", "d", "./descriptions/", "Description file path")
 }
 
 // Define the root command

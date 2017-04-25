@@ -11,8 +11,7 @@ package describe
 // {
 //   "short": "cpu"
 //   "full": "Display the CPU information of the system"
-//   "read-only": true,
-//   "input": {
+//   "system": {
 //     "source": {
 //       "type": "filesystem",
 //       "path": "/proc/cpuinfo",
@@ -24,7 +23,7 @@ package describe
 //       "multisection": true,
 //     }
 //   },
-//   "output": {
+//   "api": {
 //     "path": "/proc/cpuinfo",
 //     "methods": ["GET"],
 //	   "descriptions":
@@ -38,13 +37,47 @@ package describe
 //   }
 // }
 //
+// A description data structure tree:
+//
+// Description
+//     |- Name (string)
+//     |- DescriptionSystem
+//     |              |- DescriptionSource
+//     |              |              |- Type (string)
+//     |              |              |- Path (string)
+//     |              |
+//     |              |- DescriptionFormat (read)
+//     |              |               |- Type (string)
+//     |              |               |- Delimiter (string)
+//     |              |               |- Header (bool)
+//     |              |               |- Title ([]string)
+//     |              |               |- Regex (string)
+//     |              |               |- Multiline (bool)
+//     |              |               |- Multisection (bool)
+//     |              |
+//     |              |- DescriptionFormat (write)
+//     |                              |- Type (string)
+//     |                              |- Delimiter (string)
+//     |                              |- Header (bool)
+//     |                              |- Title ([]string)
+//     |                              |- Regex (string)
+//     |                              |- Multiline (bool)
+//     |                              |- Multisection (bool)
+//     |
+//     |- DescriptionApi
+//                    |- Path (string)
+//                    |- Methods ([]string)
+//                    |- []DescriptionApiDesc
+//                                  |- Method (string)
+//                                  |- Short (string)
+//                                  |- Long (string)
+//
 
 // Description
 type Description struct {
-	Name     string            `json:"name"`
-	Readonly bool              `json:"read-only"`
-	Input    DescriptionInput  `json:"input"`
-	Output   DescriptionOutput `json:"output"`
+	Name   string            `json:"name"`
+	System DescriptionSystem `json:"system"`
+	Api    DescriptionApi    `json:"api"`
 }
 
 // DescriptionSource
@@ -64,21 +97,22 @@ type DescriptionFormat struct {
 	Multisection bool     `json:"multisection"`
 }
 
-// DescriptionInput
-type DescriptionInput struct {
-	Source DescriptionSource `json:"source"`
-	Format DescriptionFormat `json:"format"`
+// DescriptionSystem
+type DescriptionSystem struct {
+	Source      DescriptionSource `json:"source"`
+	ReadFormat  DescriptionFormat `json:"rd-format"`
+	WriteFormat DescriptionFormat `json:"wr-format"`
 }
 
-// DescriptionOutput
-type DescriptionOutput struct {
-	Path         string                  `json:"path"`
-	Methods      []string                `json:"methods"`
-	Descriptions []DescriptionOutputDesc `json:"descriptions"`
+// DescriptionApi
+type DescriptionApi struct {
+	Path         string               `json:"path"`
+	Methods      []string             `json:"methods"`
+	Descriptions []DescriptionApiDesc `json:"descriptions"`
 }
 
-// DescriptionOutputDesc
-type DescriptionOutputDesc struct {
+// DescriptionApiDesc
+type DescriptionApiDesc struct {
 	Method string `json:"method"`
 	Short  string `json:"short"`
 	Long   string `json:"long"`
