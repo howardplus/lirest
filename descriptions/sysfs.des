@@ -1,6 +1,6 @@
 [
 {
-  "name": "version_signature",
+  "name": "test",
   "system": {
     "source": {
       "type": "sysfs",

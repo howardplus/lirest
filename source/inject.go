@@ -20,9 +20,7 @@ func NewInjector(s describe.DescriptionSource, f describe.DescriptionFormat) (In
 	var injector Injector
 
 	switch s.Type {
-	case "procfs":
-	case "sysfs":
-	case "sysctl":
+	case "procfs", "sysfs", "sysctl":
 		injector = NewGenericInjector(s.Path, f)
 	}
 

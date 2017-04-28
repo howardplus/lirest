@@ -5,6 +5,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/describe"
 	"github.com/howardplus/lirest/source"
+	"github.com/howardplus/lirest/util"
 	"net/http"
 )
 
@@ -33,10 +34,11 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		"tag":    tag,
 	}).Debug("ResourceHandler serve")
 
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "  ")
+
 	switch r.Method {
 	case "GET":
-		encoder := json.NewEncoder(w)
-		encoder.SetIndent("", "  ")
 
 		// check if we are on tagged path
 		if tag == TagInfo {
@@ -94,7 +96,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		injector, err := source.NewInjector(h.System.Source, h.System.WriteFormat)
 		if err != nil {
-			json.NewEncoder(w).Encode(err)
+			encoder.Encode(err)
 			return
 		}
 
@@ -102,11 +104,11 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// TODO: sandbox
 		_, err = injector.Inject(data.Data)
 		if err != nil {
-			json.NewEncoder(w).Encode(err)
+			encoder.Encode(err)
 			return
 		}
 
-		// validate input format
-		w.Write([]byte("200 OK\n"))
+		// success
+		encoder.Encode(util.NewResultOk())
 	}
 }

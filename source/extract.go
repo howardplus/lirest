@@ -21,9 +21,7 @@ func NewExtractor(s describe.DescriptionSource, c Converter) (Extractor, error) 
 	var extractor Extractor
 
 	switch s.Type {
-	case "procfs":
-	case "sysfs":
-	case "sysctl":
+	case "procfs", "sysfs", "sysctl":
 		extractor = NewGenericExtractor(s.Path, c)
 	}
 

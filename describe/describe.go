@@ -125,7 +125,7 @@ func ReadDescriptionPath(path string, defn *DescDefn) error {
 	return nil
 }
 
-func doFile(path string, info os.FileInfo, err error) error {
+func doSysctlFile(path string, info os.FileInfo, err error) error {
 
 	// ignore directory
 	if info.IsDir() {
@@ -142,6 +142,10 @@ func doFile(path string, info os.FileInfo, err error) error {
 	// convert path to sysctl name
 	// eg. /proc/sys/vm/nr_hugepages -> vm.nr_hugepages
 	sysctlName := strings.Replace(strings.TrimPrefix(path, "/proc/sys/"), "/", ".", -1)
+
+	// convert path to api path
+	// eg. /proc/sys/vm/nr_hugepages -> /sysctl/vm/nr_hugepages
+	apiPath := "/sysctl" + strings.TrimPrefix(path, "/proc/sys")
 
 	var d Description
 
@@ -160,7 +164,7 @@ func doFile(path string, info os.FileInfo, err error) error {
 				},
 			},
 			Api: DescriptionApi{
-				Path:         path,
+				Path:         apiPath,
 				Methods:      []string{"GET"},
 				Descriptions: []DescriptionApiDesc{},
 			},
@@ -183,7 +187,7 @@ func doFile(path string, info os.FileInfo, err error) error {
 				},
 			},
 			Api: DescriptionApi{
-				Path:         path,
+				Path:         apiPath,
 				Methods:      []string{"GET", "PUT"},
 				Descriptions: []DescriptionApiDesc{},
 			},
@@ -199,7 +203,7 @@ func doFile(path string, info os.FileInfo, err error) error {
 // and generate the descriptions automatically
 func ReadSysctlDescriptions(defn *DescDefn) error {
 
-	filepath.Walk("/proc/sys", doFile)
+	filepath.Walk("/proc/sys", doSysctlFile)
 
 	defn.DescriptionMap[DescTypeSysctl] = sysctlDesc
 
