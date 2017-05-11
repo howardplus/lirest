@@ -35,6 +35,8 @@ func NewConverter(name string, format describe.DescriptionFormat) Converter {
 		return NewListConverter(name, format.Header, format.Title, format.Multiline)
 	case "regex":
 		return NewRegexConverter(name, format.Regex, format.Title, format.Multiline)
+	case "table":
+		return NewTableConverter(name, format.HasTitle, format.HasHeading)
 	case "asis":
 		return NewAsisConverter(name, format.Multiline)
 	}

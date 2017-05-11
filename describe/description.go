@@ -95,6 +95,8 @@ type DescriptionFormat struct {
 	Regex        string   `json:"regex"`
 	Multiline    bool     `json:"multiline"`
 	Multisection bool     `json:"multisection"`
+	HasTitle     bool     `json:"hasTitle"`
+	HasHeading   bool     `json:"hasHeading"`
 }
 
 // DescriptionSystem

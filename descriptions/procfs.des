@@ -208,5 +208,31 @@
       }
     ]
   }
+},
+{
+  "name": "interrupts",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/interrupts"
+    },
+    "rd-format": {
+      "type": "table",
+      "hasTitle": true,
+      "hasHeading": true
+    }
+  },
+  "api": {
+    "path": "/proc/interrupts",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get interrupts",
+        "long": "Get system interrupts"
+      }
+    ]
+  }
 }
 ]
