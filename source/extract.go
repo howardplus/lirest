@@ -23,6 +23,8 @@ func NewExtractor(s describe.DescriptionSource, c Converter) (Extractor, error) 
 	switch s.Type {
 	case "procfs", "sysfs", "sysctl":
 		extractor = NewGenericExtractor(s.Path, c)
+	case "command":
+		extractor = NewCommandExtractor(s.Command, c)
 	}
 
 	// found an extractor, use it
@@ -53,7 +55,7 @@ func (e *GenericExtractor) Extract(vars map[string]string) (map[string]interface
 	}).Debug("Extract from file system")
 
 	// create path from variables
-	path, err := util.PathFillVars(e.path, vars)
+	path, err := util.FillVars(e.path, vars)
 	if err != nil {
 		return nil, util.NewError("Failed to generate path")
 	}

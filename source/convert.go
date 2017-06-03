@@ -39,6 +39,8 @@ func NewConverter(name string, format describe.DescriptionFormat) Converter {
 		return NewTableConverter(name, format.HasTitle, format.HasHeading)
 	case "asis":
 		return NewAsisConverter(name, format.Multiline)
+	case "line-by-line":
+		return NewLBLConverter(name, format.Multisection)
 	}
 
 	// default is as-is

@@ -15,22 +15,11 @@ const (
 	descTypeInvalid  = iota // invalid description type
 	DescTypeStandard        // standard description
 	DescTypeSysctl          // sysctl description (read from file system directly)
-	DescTypeCustom          // custom description
 
-	descTypeMax = 3
+	descTypeMax = 2
 
 	descFileExt = ".des" // description file extension
 )
-
-var descStandardFiles []string = []string{
-	"procfs",
-	"sysfs",
-}
-
-// files that contain paths to be excluded
-var descExcludeFiles []string = []string{
-	"exclude",
-}
 
 // global sysctl descriptions
 var sysctlDesc []Description = []Description{}
@@ -67,29 +56,7 @@ func ReadDescriptionPath(path string, defn *DescDefn) error {
 		}
 
 		// standard description files
-		var dt DescType = descTypeInvalid
-		for _, fn := range descStandardFiles {
-			if file.Name() == fn+descFileExt {
-				dt = DescTypeStandard
-			}
-		}
-
-		// skip exclude file
-		var excluded bool
-		for _, fn := range descExcludeFiles {
-			if file.Name() == fn+descFileExt {
-				excluded = true
-				break
-			}
-		}
-		if excluded {
-			continue
-		}
-
-		// custom description files
-		if dt == descTypeInvalid {
-			dt = DescTypeCustom
-		}
+		var dt DescType = DescTypeStandard
 
 		// got the file, try and open it
 		f, err := os.Open(path + file.Name())
@@ -116,7 +83,8 @@ func ReadDescriptionPath(path string, defn *DescDefn) error {
 		}
 
 		log.WithFields(log.Fields{
-			"file": file.Name(),
+			"file":    file.Name(),
+			"entries": len(d),
 		}).Info("Processed description file")
 	}
 

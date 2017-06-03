@@ -4,15 +4,15 @@ import (
 	"strings"
 )
 
-func PathFillVars(path string, vars map[string]string) (string, error) {
+func FillVars(s string, vars map[string]string) (string, error) {
 	for k, v := range vars {
 		// TODO: add more error checking and utest
-		start := strings.Index(path, "{"+k+"}")
+		start := strings.Index(s, "{"+k+"}")
 		end := start + 2 + len(k)
-		path = path[:start] + v + path[end:]
+		s = s[:start] + v + s[end:]
 	}
 
-	return path, nil
+	return s, nil
 }
 
 func PathAddType(path string, vars map[string]string) string {

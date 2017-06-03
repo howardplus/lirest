@@ -1,0 +1,27 @@
+[
+{
+  "name": "route",
+  "system": {
+    "source": {
+      "type": "command",
+      "command": "ip route"
+    },
+    "rd-format": {
+      "type": "line-by-line",
+      "multiline": true
+    }
+  },
+  "api": {
+    "path": "/command/route",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get interface settings",
+        "long": "Get all interface settings"
+      }
+    ]
+  }
+}
+]
