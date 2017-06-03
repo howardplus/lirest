@@ -6,7 +6,7 @@ import (
 )
 
 func TestColonSeparator(t *testing.T) {
-	sep1 := source.NewSeparatorConverter(":")
+	sep1 := source.NewSeparatorConverter("test", ":", false, false)
 
 	s1 := "foo:bar"
 	k, v, err := sep1.ConvertLine(s1)

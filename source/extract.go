@@ -13,7 +13,7 @@ import (
 // to know where to get the data, which then feeds to the
 // converter.
 type Extractor interface {
-	Extract() (interface{}, error)
+	Extract(vars map[string]string) (map[string]interface{}, error)
 }
 
 // NewExtractor create a new extractor based on the description
@@ -46,9 +46,20 @@ func NewGenericExtractor(path string, conv Converter) *GenericExtractor {
 	return &GenericExtractor{path: path, conv: conv}
 }
 
-func (e *GenericExtractor) Extract() (interface{}, error) {
+func (e *GenericExtractor) Extract(vars map[string]string) (map[string]interface{}, error) {
+	log.WithFields(log.Fields{
+		"path": e.path,
+		"vars": vars,
+	}).Debug("Extract from file system")
+
+	// create path from variables
+	path, err := util.PathFillVars(e.path, vars)
+	if err != nil {
+		return nil, util.NewError("Failed to generate path")
+	}
+
 	// open file from path
-	f, err := os.Open(e.path)
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, util.NewError("Failed to open system path")
 	}
@@ -56,12 +67,8 @@ func (e *GenericExtractor) Extract() (interface{}, error) {
 
 	// TODO: verify the rw format on this path
 
-	log.WithFields(log.Fields{
-		"path": e.path,
-	}).Debug("Extract from file system")
-
 	// give it to the converter
-	result, err := e.conv.ConvertStream(f)
+	data, err := e.conv.ConvertStream(f)
 	if err != nil {
 		return nil, err
 	}
@@ -70,5 +77,8 @@ func (e *GenericExtractor) Extract() (interface{}, error) {
 		"path": e.path,
 	}).Debug("Convert successful")
 
-	return result, nil
+	return map[string]interface{}{
+		"name": e.conv.Name(),
+		"data": data,
+	}, nil
 }

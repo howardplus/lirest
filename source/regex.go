@@ -34,15 +34,13 @@ func NewRegexConverter(n string, x string, title []string, ml bool) *RegexConver
 	}
 }
 
-// ConvertLine
-func (c *RegexConverter) ConvertLine(in string) (string, interface{}, error) {
-	// just let regex do its thing
-	groups := c.regex.FindStringSubmatch(in)
-	return "", groups, nil
+// Name
+func (c *RegexConverter) Name() string {
+	return c.name
 }
 
 // ConvertStream
-func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
+func (c *RegexConverter) ConvertStream(r io.Reader) (interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)
 
@@ -53,14 +51,14 @@ func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 
 		dataLine := map[string]string{}
 
-		_, v, _ := c.ConvertLine(l)
+		groups := c.regex.FindStringSubmatch(l)
 
 		log.WithFields(log.Fields{
 			"title":  len(c.title),
-			"groups": len(v.([]string)),
+			"groups": len(groups),
 		}).Debug("Convert regex line")
 
-		for i, g := range v.([]string) {
+		for i, g := range groups {
 			log.WithFields(log.Fields{
 				"idx": i,
 			}).Debug(g)
@@ -79,18 +77,12 @@ func (c *RegexConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 		}
 
 		if line == 0 && !c.multiline {
-			return map[string]interface{}{
-				"name": c.name,
-				"data": dataLine,
-			}, nil
+			return dataLine, nil
 		}
 
 		data = append(data, dataLine)
 		line++
 	}
 
-	return map[string]interface{}{
-		"name": c.name,
-		"data": data,
-	}, nil
+	return data, nil
 }

@@ -9,13 +9,13 @@ import (
 // Converter
 // generic convert interface
 type Converter interface {
-	// single line converter takes an input line
-	// and convert into key-value pair
-	ConvertLine(in string) (key string, value interface{}, err error)
+
+	// Name returns the name for the converter
+	Name() string
 
 	// stream conversion takes an io.Reader and convert
 	// line by line into a map
-	ConvertStream(r io.Reader) (result map[string]interface{}, err error)
+	ConvertStream(r io.Reader) (interface{}, error)
 }
 
 // ConvertValue

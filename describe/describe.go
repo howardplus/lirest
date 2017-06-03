@@ -38,9 +38,9 @@ var sysctlDesc []Description = []Description{}
 // DescType
 type DescType int
 
-// ReadDescriptions reads in descriptions from a input, typically a file
+// readDescriptions reads in descriptions from a input, typically a file
 // this is a thin wrapper whose purpose is for this to be testable
-func ReadDescriptions(r io.Reader) ([]Description, error) {
+func readDescriptions(r io.Reader) ([]Description, error) {
 	var output []Description
 	if err := json.NewDecoder(r).Decode(&output); err != nil {
 		return nil, errors.New("Desciption read error: " + err.Error())
@@ -91,7 +91,7 @@ func ReadDescriptionPath(path string, defn *DescDefn) error {
 			dt = DescTypeCustom
 		}
 
-		// read descriptions from file
+		// got the file, try and open it
 		f, err := os.Open(path + file.Name())
 		if err != nil {
 			return errors.New("Description file open error: " + err.Error())
@@ -102,7 +102,8 @@ func ReadDescriptionPath(path string, defn *DescDefn) error {
 			"file": file.Name(),
 		}).Info("Reading description file")
 
-		d, err := ReadDescriptions(f)
+		// read descriptions from file
+		d, err := readDescriptions(f)
 		if err != nil {
 			return err
 		}

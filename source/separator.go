@@ -43,9 +43,14 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 	return key, value, nil
 }
 
+// Name
+func (c *SeparatorConverter) Name() string {
+	return c.name
+}
+
 // ConvertStream
 // stream input, read line by line
-func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
+func (c *SeparatorConverter) ConvertStream(r io.Reader) (interface{}, error) {
 
 	output := make([]map[string]interface{}, 0)
 
@@ -85,10 +90,7 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 
 		if !c.multiline && line == 0 {
 			// single line source, done
-			return map[string]interface{}{
-				"name": c.name,
-				"data": outputSection,
-			}, nil
+			return outputSection, nil
 		}
 
 		line++
@@ -97,15 +99,9 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (map[string]interface{},
 	// there may not be an empty line at all
 	// in this case, take the entire section as output
 	if len(output) == 0 {
-		return map[string]interface{}{
-			"name": c.name,
-			"data": outputSection,
-		}, nil
+		return outputSection, nil
 	}
 
 	// otherwise, prepare the multi-section output
-	return map[string]interface{}{
-		"name": c.name,
-		"data": output,
-	}, nil
+	return output, nil
 }

@@ -70,6 +70,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 		for _, method := range desc.Api.Methods {
 
 			log.WithFields(log.Fields{
+				"name":     desc.Name,
 				"method":   method,
 				"path":     fullpath.String(),
 				"api-path": desc.Api.Path,
@@ -81,6 +82,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 					desc.Name,
 					desc.System,
 					desc.Api.Descriptions,
+					desc.Vars,
 				})
 		}
 	} else {

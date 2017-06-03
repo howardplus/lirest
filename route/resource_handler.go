@@ -3,6 +3,7 @@ package route
 import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gorilla/mux"
 	"github.com/howardplus/lirest/describe"
 	"github.com/howardplus/lirest/source"
 	"github.com/howardplus/lirest/util"
@@ -14,6 +15,7 @@ type ResourceHandler struct {
 	Name   string
 	System describe.DescriptionSystem
 	Api    []describe.DescriptionApiDesc
+	Vars   []describe.DescriptionVar
 }
 
 // input from POST/PUT
@@ -26,17 +28,34 @@ type userData struct {
 func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s := h.System.Source
 	tag := r.Header.Get(TagHeaderName)
+	vars := mux.Vars(r)
+
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "  ")
 
 	log.WithFields(log.Fields{
 		"method": r.Method,
 		"path":   r.URL.Path,
 		"type":   s.Type,
 		"tag":    tag,
+		"vars":   vars,
 	}).Debug("ResourceHandler serve")
 
-	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", "  ")
+	// check type compatibility of each var
+	for _, v := range h.Vars {
+		varType := v.DataType
+		if val, found := vars[v.Name]; found == false {
+			encoder.Encode(util.NewError("Variable not found"))
+			return
+		} else {
+			if describe.DescriptionVarValidate(val, varType) == false {
+				encoder.Encode(util.NewError("Variable validation error"))
+				return
+			}
+		}
+	}
 
+	// handle based on method type
 	switch r.Method {
 	case "GET":
 
@@ -63,7 +82,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// extract the data
-		output, err := extractor.Extract()
+		output, err := extractor.Extract(vars)
 		if err != nil {
 			encoder.Encode(err)
 			return

@@ -1,5 +1,7 @@
 package describe
 
+import "strconv"
+
 // describe takes in a set of description files
 // and generate the paths/info/man from those
 // description
@@ -34,6 +36,11 @@ package describe
 //         "long": "Get CPU information from the system"
 //       }
 //     ]
+//   },
+//   "vars": {
+//     "pid": {
+//       "data-type": "uint",
+//     }
 //   }
 // }
 //
@@ -78,6 +85,7 @@ type Description struct {
 	Name   string            `json:"name"`
 	System DescriptionSystem `json:"system"`
 	Api    DescriptionApi    `json:"api"`
+	Vars   []DescriptionVar  `json:"vars"`
 }
 
 // DescriptionSource
@@ -88,15 +96,16 @@ type DescriptionSource struct {
 
 // DescriptionFormat
 type DescriptionFormat struct {
-	Type         string   `json:"type"`
-	Delimiter    string   `json:"delimiter"`
-	Header       bool     `json:"header"`
-	Title        []string `json:"title"`
-	Regex        string   `json:"regex"`
-	Multiline    bool     `json:"multiline"`
-	Multisection bool     `json:"multisection"`
-	HasTitle     bool     `json:"hasTitle"`
-	HasHeading   bool     `json:"hasHeading"`
+	Type                string   `json:"type"`
+	Delimiter           string   `json:"delimiter"`
+	Header              bool     `json:"header"`
+	Title               []string `json:"title"`
+	Regex               string   `json:"regex"`
+	Multiline           bool     `json:"multiline"`
+	Multisection        bool     `json:"multisection"`
+	HasTitle            bool     `json:"hasTitle"`
+	HasHeading          bool     `json:"hasHeading"`
+	TitleIncludeHeading bool     `json:"titleIncludeHeading"`
 }
 
 // DescriptionSystem
@@ -113,9 +122,28 @@ type DescriptionApi struct {
 	Descriptions []DescriptionApiDesc `json:"descriptions"`
 }
 
+// DescriptionVar
+type DescriptionVar struct {
+	Name     string `json:"name"`
+	DataType string `json:"data-type"`
+}
+
 // DescriptionApiDesc
 type DescriptionApiDesc struct {
 	Method string `json:"method"`
 	Short  string `json:"short"`
 	Long   string `json:"long"`
+}
+
+// DescriptionVarValidate valiates the data type string
+// of a variable, which is represented as string
+func DescriptionVarValidate(v string, dataType string) bool {
+	switch dataType {
+	case "uint":
+		if _, err := strconv.ParseUint(v, 10, 32); err != nil {
+			return false
+		}
+	}
+	// default is ok, including a string type
+	return true
 }

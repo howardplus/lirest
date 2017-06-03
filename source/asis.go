@@ -20,13 +20,13 @@ func NewAsisConverter(n string, ml bool) *AsisConverter {
 	return &AsisConverter{name: n, multiline: ml}
 }
 
-// ConvertLine
-func (c *AsisConverter) ConvertLine(in string) (string, interface{}, error) {
-	return "", in, nil
+// Name
+func (c *AsisConverter) Name() string {
+	return c.name
 }
 
 // ConvertStream
-func (c *AsisConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
+func (c *AsisConverter) ConvertStream(r io.Reader) (interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)
 
@@ -34,8 +34,7 @@ func (c *AsisConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 
 	for scanner.Scan() {
 		l := scanner.Text()
-		_, v, _ := c.ConvertLine(l)
-		data.WriteString(v.(string))
+		data.WriteString(l)
 		line++
 	}
 
@@ -43,8 +42,5 @@ func (c *AsisConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 		"line": line,
 	}).Debug("Convert as-is")
 
-	return map[string]interface{}{
-		"name": c.name,
-		"data": data.String(),
-	}, nil
+	return data.String(), nil
 }

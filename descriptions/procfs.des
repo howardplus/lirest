@@ -1,5 +1,37 @@
 [
 {
+  "name": "process cmdline",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/{pid}/cmdline"
+    },
+    "rd-format": {
+      "type": "asis",
+      "multiline": false
+    }
+  },
+  "api": {
+    "path": "/proc/{pid}/cmdline",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get kernel command line",
+        "long": "Get kernel bootup command argument"
+      }
+    ]
+  },
+  "vars":
+  [ 
+    {
+      "name": "pid",
+      "data-type": "uint"
+    }
+  ] 
+},
+{
   "name": "cmdline",
   "system": {
     "source": {
@@ -52,6 +84,114 @@
   }
 },
 {
+  "name": "dma",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/dma"
+    },
+    "rd-format": {
+      "type": "separator",
+      "delimiter": ":",
+      "multiline": true,
+      "multisection": false
+    }
+  },
+  "api": {
+    "path": "/proc/dma",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get DMA info",
+        "long": "Get DMA information from the system"
+      }
+    ]
+  }
+},
+{
+  "name": "filesystems",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/filesystems"
+    },
+    "rd-format": {
+      "type": "list",
+      "header": false,
+      "multiline": true,
+      "title": ["mounted", "name"]
+    }
+  },
+  "api": {
+    "path": "/proc/filesystems",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get filesystem info",
+        "long": "Get filesystem information from the system"
+      }
+    ]
+  }
+},
+{
+  "name": "interrupts",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/interrupts"
+    },
+    "rd-format": {
+      "type": "table",
+      "hasTitle": true,
+      "hasHeading": true,
+      "titleIncludeHeading": false
+    }
+  },
+  "api": {
+    "path": "/proc/interrupts",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get interrupts",
+        "long": "Get system interrupts"
+      }
+    ]
+  }
+},
+{
+  "name": "kernel symbols",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/kallsyms"
+    },
+    "rd-format": {
+      "type": "list",
+      "header": false,
+      "multiline": true,
+      "title": ["address", "type", "name", "module"]
+    }
+  },
+  "api": {
+    "path": "/proc/kallsyms",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get kernel symbol info",
+        "long": "Get kernel symbol information from the system"
+      }
+    ]
+  }
+},
+{
   "name": "memory_info",
   "system": {
     "source": {
@@ -79,28 +219,27 @@
   }
 },
 {
-  "name": "uptime",
+  "name": "partitions",
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/uptime"
+      "path": "/proc/partitions"
     },
     "rd-format": {
       "type": "list",
-      "header": false,
-      "title": ["uptime(s)", "idle(s)"],
-      "multiline": false
+      "header": true,
+      "multiline": true
     }
   },
   "api": {
-    "path": "/proc/uptime",
+    "path": "/proc/partitions",
     "methods": ["GET"],
     "descriptions": 
     [
       {
         "method": "GET",
-        "short": "Get system up time",
-        "long": "Get system up and idle time"
+        "short": "Get partition blocks",
+        "long": "Get partition blocks allocation information"
       }
     ]
   }
@@ -132,27 +271,28 @@
   }
 },
 {
-  "name": "partitions",
+  "name": "uptime",
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/partitions"
+      "path": "/proc/uptime"
     },
     "rd-format": {
       "type": "list",
-      "header": true,
-      "multiline": true
+      "header": false,
+      "title": ["uptime(s)", "idle(s)"],
+      "multiline": false
     }
   },
   "api": {
-    "path": "/proc/partitions",
+    "path": "/proc/uptime",
     "methods": ["GET"],
     "descriptions": 
     [
       {
         "method": "GET",
-        "short": "Get partition blocks",
-        "long": "Get partition blocks allocation information"
+        "short": "Get system up time",
+        "long": "Get system up and idle time"
       }
     ]
   }
@@ -205,32 +345,6 @@
         "method": "GET",
         "short": "Get system version signature",
         "long": "Get system version signature full string"
-      }
-    ]
-  }
-},
-{
-  "name": "interrupts",
-  "system": {
-    "source": {
-      "type": "procfs",
-      "path": "/proc/interrupts"
-    },
-    "rd-format": {
-      "type": "table",
-      "hasTitle": true,
-      "hasHeading": true
-    }
-  },
-  "api": {
-    "path": "/proc/interrupts",
-    "methods": ["GET"],
-    "descriptions": 
-    [
-      {
-        "method": "GET",
-        "short": "Get interrupts",
-        "long": "Get system interrupts"
       }
     ]
   }

@@ -26,20 +26,14 @@ func NewListConverter(n string, h bool, t []string, ml bool) *ListConverter {
 	return &ListConverter{name: n, header: h, title: t, multiline: ml}
 }
 
-// ConvertLine
-// Convert a line
-func (c *ListConverter) ConvertLine(in string) (string, interface{}, error) {
-
-	// it can be either separated by space or tab
-	fields := strings.Fields(in)
-
-	// there is no key in a list
-	return "", fields, nil
+// Name
+func (c *ListConverter) Name() string {
+	return c.name
 }
 
 // ConvertStream
 // Convert from a io.Reader
-func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
+func (c *ListConverter) ConvertStream(r io.Reader) (interface{}, error) {
 
 	// output is a slice of map of title to value
 	output := []map[string]string{}
@@ -55,18 +49,15 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 			continue
 		}
 
-		_, v, err := c.ConvertLine(l)
-		if err != nil {
-			return nil, err
-		}
-
 		log.WithFields(log.Fields{
 			"line": line,
 		}).Info("Add list")
 
+		fields := strings.Fields(l)
+
 		// use the title as key
 		// example: /proc/swaps
-		for col, val := range v.([]string) {
+		for col, val := range fields {
 
 			// first line is stored as title
 			if line == 0 && c.header {
@@ -100,10 +91,7 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 		}
 
 		if !c.multiline {
-			return map[string]interface{}{
-				"name": c.name,
-				"data": outputLine,
-			}, nil
+			return outputLine, nil
 		} else if line != 0 || !c.header {
 			output = append(output, outputLine)
 		}
@@ -112,8 +100,5 @@ func (c *ListConverter) ConvertStream(r io.Reader) (map[string]interface{}, erro
 		line++
 	}
 
-	return map[string]interface{}{
-		"name": c.name,
-		"data": output,
-	}, nil
+	return output, nil
 }

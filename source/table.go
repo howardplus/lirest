@@ -14,9 +14,10 @@ const colTitleOther = "Other"
 // TableConverter converts a table-like output
 // example: /proc/interrupts
 type TableConverter struct {
-	name       string
-	hasTitle   bool // title goes to the top (row 0)
-	hasHeading bool // heading goes to the left (col 0)
+	name                string
+	hasTitle            bool // title goes to the top (row 0)
+	hasHeading          bool // heading goes to the left (col 0)
+	titleIncludeHeading bool // does the title contain a title for the heading?
 }
 
 // NewTableConverter create a new table separator
@@ -25,7 +26,7 @@ func NewTableConverter(n string, t bool, h bool) *TableConverter {
 }
 
 // ConvertLine converts a line into a row
-func (c *TableConverter) ConvertLine(in string) (key string, value interface{}, err error) {
+func (c *TableConverter) convertLine(in string) (key string, value interface{}, err error) {
 
 	log.WithFields(log.Fields{
 		"line": in,
@@ -40,8 +41,13 @@ func (c *TableConverter) ConvertLine(in string) (key string, value interface{}, 
 	return "", fields, nil
 }
 
+// Name
+func (c *TableConverter) Name() string {
+	return c.name
+}
+
 // ConvertStream streams input, read line by line
-func (c *TableConverter) ConvertStream(r io.Reader) (map[string]interface{}, error) {
+func (c *TableConverter) ConvertStream(r io.Reader) (interface{}, error) {
 
 	output := make(map[string]interface{}, 0)
 
@@ -82,7 +88,7 @@ func (c *TableConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 		tmp := strings.Trim(strings.TrimPrefix(l, heading), " \t")
 
 		// convert line by line
-		_, v, err := c.ConvertLine(tmp)
+		_, v, err := c.convertLine(tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -113,8 +119,5 @@ func (c *TableConverter) ConvertStream(r io.Reader) (map[string]interface{}, err
 
 	output["rows"] = rows
 
-	return map[string]interface{}{
-		"name": c.name,
-		"data": output,
-	}, nil
+	return output, nil
 }

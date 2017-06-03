@@ -12,6 +12,7 @@ import (
 func init() {
 	RootCmd.AddCommand(versionCmd)
 
+	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().NoSysctl, "no-sysctl", "s", false, "Disable sysctl routes")
 	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Verbose, "verbose", "v", false, "verbose output")
 	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Quiet, "quiet", "q", false, "quiet output")
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Addr, "ip", "i", "localhost", "IP address to listen on")
@@ -45,6 +46,6 @@ func runRootCmd(cmd *cobra.Command, args []string) error {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	lirest.Run(config.GetConfig().DescPath)
+	lirest.Run(config.GetConfig().DescPath, config.GetConfig().NoSysctl)
 	return nil
 }
