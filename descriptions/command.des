@@ -8,7 +8,7 @@
     },
     "rd-format": {
       "type": "line-by-line",
-      "multiline": true
+      "multisection": false
     }
   },
   "api": {

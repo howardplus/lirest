@@ -17,6 +17,7 @@ type ConfigDefn struct {
 	NoSysctl bool
 	Verbose  bool
 	Quiet    bool
+	Watch    bool // watch for changes in description files
 }
 
 var instance *ConfigDefn

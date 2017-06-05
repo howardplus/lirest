@@ -18,6 +18,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Addr, "ip", "i", "localhost", "IP address to listen on")
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().Port, "port", "p", "8080", "Port to listen on")
 	RootCmd.PersistentFlags().StringVarP(&config.GetConfig().DescPath, "desc-path", "d", "./descriptions/", "Description file path")
+	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Watch, "watch", "w", false, "Watch for changes in description files")
 }
 
 // Define the root command
@@ -46,6 +47,6 @@ func runRootCmd(cmd *cobra.Command, args []string) error {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	lirest.Run(config.GetConfig().DescPath, config.GetConfig().NoSysctl)
+	lirest.Run(config.GetConfig().DescPath, config.GetConfig().NoSysctl, config.GetConfig().Watch)
 	return nil
 }

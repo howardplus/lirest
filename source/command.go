@@ -34,7 +34,7 @@ func (e *CommandExtractor) Extract(vars map[string]string) (map[string]interface
 
 	// run command
 	cmdTokens := strings.Split(cmd, " ")
-	out, _ := exec.Command(cmdTokens[0], cmdTokens[1]).Output()
+	out, _ := exec.Command(cmdTokens[0], cmdTokens[1:]...).Output()
 	buf := bytes.NewBuffer(out)
 
 	// give it to the converter
