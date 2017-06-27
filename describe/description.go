@@ -17,12 +17,13 @@ import "strconv"
 //     "source": {
 //       "type": "filesystem",
 //       "path": "/proc/cpuinfo",
+//	     "refresh": "never|always|<time(s,m,h)>"
 //     },
 //     "format": {
 //       "type": "separated",
 //       "delimiter": ":",
 //       "multiline": true,
-//       "multisection": true,
+//       "multisection": true
 //     }
 //   },
 //   "api": {
@@ -52,6 +53,7 @@ import "strconv"
 //     |              |- DescriptionSource
 //     |              |              |- Type (string)
 //     |              |              |- Path (string)
+//     |              |              |- Refresh (string)
 //     |              |
 //     |              |- DescriptionFormat (read)
 //     |              |               |- Type (string)
@@ -92,6 +94,7 @@ type Description struct {
 type DescriptionSource struct {
 	Type    string `json:"type"`
 	Path    string `json:"path"`
+	Refresh string `json:"refresh"`
 	Command string `json:"command"`
 }
 

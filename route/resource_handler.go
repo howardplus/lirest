@@ -75,14 +75,14 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		conv := source.NewConverter(h.Name, h.System.ReadFormat)
 
 		// read data from source
-		extractor, err := source.NewExtractor(s, conv)
+		extractor, err := source.NewExtractor(s, conv, vars)
 		if err != nil {
 			encoder.Encode(err)
 			return
 		}
 
 		// extract the data
-		output, err := extractor.Extract(vars)
+		output, err := extractor.Extract()
 		if err != nil {
 			encoder.Encode(err)
 			return

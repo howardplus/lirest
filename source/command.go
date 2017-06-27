@@ -12,22 +12,23 @@ import (
 type CommandExtractor struct {
 	cmd  string
 	conv Converter
+	vars map[string]string
 }
 
 // NewCommandExtractor creates a command extractor
 // that extract data from running a system command
-func NewCommandExtractor(cmd string, conv Converter) *CommandExtractor {
-	return &CommandExtractor{cmd: cmd, conv: conv}
+func NewCommandExtractor(cmd string, conv Converter, vars map[string]string) *CommandExtractor {
+	return &CommandExtractor{cmd: cmd, conv: conv, vars: vars}
 }
 
-func (e *CommandExtractor) Extract(vars map[string]string) (map[string]interface{}, error) {
+func (e *CommandExtractor) Extract() (map[string]interface{}, error) {
 	log.WithFields(log.Fields{
 		"cmd":  e.cmd,
-		"vars": vars,
+		"vars": e.vars,
 	}).Debug("Extract from command")
 
 	// create command from variables
-	cmd, err := util.FillVars(e.cmd, vars)
+	cmd, err := util.FillVars(e.cmd, e.vars)
 	if err != nil {
 		return nil, util.NewError("Failed to generate command")
 	}

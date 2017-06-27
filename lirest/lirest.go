@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/config"
 	"github.com/howardplus/lirest/route"
+	"github.com/howardplus/lirest/source"
 	"net/http"
 	_ "time"
 )
@@ -20,6 +21,8 @@ func Run(path string, noSysctl bool, watch bool) error {
 	serverDone := make(chan int, 1)
 
 	go DescriptionWatcher(routeChange, path, noSysctl, watch)
+
+	go source.CacheManager()
 
 	// wait and handle all the channel messagas
 	var srv *http.Server

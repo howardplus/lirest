@@ -4,7 +4,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/{pid}/cmdline"
+      "path": "/proc/{pid}/cmdline",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "asis",
@@ -36,7 +37,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/cmdline"
+      "path": "/proc/cmdline",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "asis",
@@ -61,7 +63,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/cpuinfo"
+      "path": "/proc/cpuinfo",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "separator",
@@ -88,7 +91,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/dma"
+      "path": "/proc/dma",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "separator",
@@ -115,7 +119,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/filesystems"
+      "path": "/proc/filesystems",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "list",
@@ -142,7 +147,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/interrupts"
+      "path": "/proc/interrupts",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "table",
@@ -169,7 +175,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/kallsyms"
+      "path": "/proc/kallsyms",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "list",
@@ -196,7 +203,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/meminfo"
+      "path": "/proc/meminfo",
+      "refresh": "1m"
     },
     "rd-format": {
       "type": "separator",
@@ -223,7 +231,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/partitions"
+      "path": "/proc/partitions",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "list",
@@ -249,7 +258,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/swaps"
+      "path": "/proc/swaps",
+      "refresh": "1h"
     },
     "rd-format": {
       "type": "list",
@@ -275,7 +285,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/uptime"
+      "path": "/proc/uptime",
+      "refresh": "always"
     },
     "rd-format": {
       "type": "list",
@@ -302,7 +313,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/version"
+      "path": "/proc/version",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "regex",
@@ -329,7 +341,8 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/version_signature"
+      "path": "/proc/version_signature",
+      "refresh": "never"
     },
     "rd-format": {
       "type": "asis",
