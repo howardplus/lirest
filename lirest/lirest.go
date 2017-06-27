@@ -5,13 +5,57 @@ import (
 	"github.com/howardplus/lirest/config"
 	"github.com/howardplus/lirest/route"
 	"github.com/howardplus/lirest/source"
+	"io"
 	"net/http"
-	_ "time"
+	"os"
 )
 
 type DescMsg struct {
 	trie *route.Trie
 	err  error
+}
+
+// Download description files from URL
+func Download(url string, path string) error {
+	filename := "lirest.des"
+
+	// remove files from the path
+	os.Remove(path + filename)
+
+	if err := os.MkdirAll(path, 0755); err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+			"path":  path,
+		}).Error("path create error")
+		return err
+	}
+
+	out, err := os.Create(path + filename)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+			"path":  path + filename,
+		}).Error("file create error")
+		return err
+	}
+	defer out.Close()
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+			"url":   url,
+		}).Error("http get error")
+		return err
+	}
+	defer resp.Body.Close()
+
+	if _, err := io.Copy(out, resp.Body); err != nil {
+		log.Error("io error")
+		return err
+	}
+
+	return nil
 }
 
 // Run starts the lirest server

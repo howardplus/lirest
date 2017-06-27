@@ -14,6 +14,7 @@ type ConfigDefn struct {
 	Port     string
 	Security SecurityConfigDefn
 	DescPath string
+	DescUrl  string
 	NoSysctl bool
 	Verbose  bool
 	Quiet    bool
