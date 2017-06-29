@@ -11,6 +11,7 @@ import (
 
 func init() {
 	RootCmd.AddCommand(versionCmd)
+	RootCmd.AddCommand(clientCmd)
 
 	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().NoSysctl, "no-sysctl", "s", false, "Disable sysctl routes")
 	RootCmd.PersistentFlags().BoolVarP(&config.GetConfig().Verbose, "verbose", "v", false, "verbose output")

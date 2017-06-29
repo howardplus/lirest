@@ -1,8 +1,9 @@
 LiREST: Linux on REST
 
-LiREST makes it easier for machines to control each other.
+LiREST gives you control of the system remotely by:
 
-LiREST creates REST API based on description files, and thereby allowing
-machines to read and write system settings or commands.
+* Creates REST API based on description files
+* Parse and produce JSON formatted output
+* Support system variables or commands
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/howardplus/lirest)](https://goreportcard.com/report/github.com/howardplus/lirest)

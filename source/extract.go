@@ -40,6 +40,8 @@ func NewExtractor(s describe.DescriptionSource, c Converter, vars map[string]str
 				refresh = time.Duration(v) * time.Hour
 			}
 		}
+	case "":
+		// do nothing
 	}
 
 	switch s.Type {
@@ -119,7 +121,7 @@ func (e *GenericExtractor) Extract() (map[string]interface{}, error) {
 
 	// send to cache
 	if e.refresh != time.Duration(0) {
-		if err := SendCache(hash, data, time.Now().Add(e.refresh)); err != nil {
+		if err := SendCache(hash, data, e.refresh); err != nil {
 			// cache error, non-fatal
 			log.WithFields(log.Fields{
 				"path": e.path,

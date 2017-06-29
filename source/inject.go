@@ -4,11 +4,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/describe"
 	"github.com/howardplus/lirest/inject"
-	"github.com/howardplus/lirest/job"
-	"github.com/howardplus/lirest/sandbox"
 	"github.com/howardplus/lirest/util"
 	"io/ioutil"
-	"time"
 )
 
 // NewInjector creates an injector based on the source type
@@ -39,7 +36,7 @@ func NewGenericInjector(path string, format describe.DescriptionFormat) *Generic
 	return &GenericInjector{path: path, format: format}
 }
 
-func (inj *GenericInjector) Inject(data string) (job.Job, error) {
+func (inj *GenericInjector) Inject(data string) error {
 
 	log.WithFields(log.Fields{
 		"data": data,
@@ -48,25 +45,26 @@ func (inj *GenericInjector) Inject(data string) (job.Job, error) {
 
 	// validate data first
 	if err := validate(data, inj.format); err != nil {
-		return nil, err
+		return err
 	}
 
-	// read original value
+	// read old value
+	old := ""
 
 	// send data to file
 	buf := []byte(data)
 	if err := ioutil.WriteFile(inj.path, buf, 0400); err != nil {
 		log.Error(err.Error())
-		return nil, util.NewError(err.Error())
+		return util.NewError(err.Error())
 	}
 
-	return &sandbox.Job{
-		Start:    time.Now(),
-		Expire:   time.Now().Add(time.Minute),
-		Id:       0,
-		Injector: inj,
-		Data:     data,
-	}, nil
+	// send successful, record this job
+	inject.RecordJob(inj, old, data)
+	return nil
+}
+
+func (inj *GenericInjector) Name() string {
+	return inj.path
 }
 
 func validate(data string, format describe.DescriptionFormat) error {

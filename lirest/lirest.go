@@ -3,6 +3,7 @@ package lirest
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/config"
+	"github.com/howardplus/lirest/inject"
 	"github.com/howardplus/lirest/route"
 	"github.com/howardplus/lirest/source"
 	"io"
@@ -67,6 +68,8 @@ func Run(path string, noSysctl bool, watch bool) error {
 	go DescriptionWatcher(routeChange, path, noSysctl, watch)
 
 	go source.CacheManager()
+
+	go inject.JobTracker()
 
 	// wait and handle all the channel messagas
 	var srv *http.Server

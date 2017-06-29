@@ -11,7 +11,7 @@ import (
 type cacheMsg struct {
 	hash   string
 	data   interface{}
-	expire time.Time
+	expire time.Duration
 }
 
 type cacheData struct {
@@ -20,8 +20,9 @@ type cacheData struct {
 }
 
 type cacheInternalData struct {
-	data   interface{}
-	expire time.Time
+	data     interface{}
+	lastused time.Time
+	expire   time.Duration
 }
 
 // channels
@@ -54,6 +55,7 @@ func CacheManager() {
 					err:  util.NewError("Cache not found"),
 				}
 			} else {
+				data.lastused = time.Now()
 				cacheDataChan <- &cacheData{
 					data: data.data,
 					err:  nil,
@@ -61,13 +63,14 @@ func CacheManager() {
 			}
 		case msg := <-cacheSendChan:
 			cacheMap[msg.hash] = &cacheInternalData{
-				data:   msg.data,
-				expire: msg.expire,
+				data:     msg.data,
+				expire:   msg.expire,
+				lastused: time.Now(),
 			}
 		case <-time.After(time.Second):
 			now := time.Now()
 			for k, v := range cacheMap {
-				if v.expire.Unix() <= now.Unix() {
+				if v.lastused.Add(v.expire).Unix() <= now.Unix() {
 					log.WithFields(log.Fields{
 						"key":    k,
 						"expire": v.expire,
@@ -97,7 +100,7 @@ func Cache(hash string) (interface{}, error) {
 }
 
 // SendCache sends a cache result to cache manager
-func SendCache(hash string, data interface{}, expire time.Time) error {
+func SendCache(hash string, data interface{}, expire time.Duration) error {
 
 	log.WithFields(log.Fields{
 		"hash":   hash,

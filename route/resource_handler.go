@@ -120,9 +120,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// perform the system setting
-		// TODO: sandbox
-		_, err = injector.Inject(data.Data)
-		if err != nil {
+		if err := injector.Inject(data.Data); err != nil {
 			encoder.Encode(err)
 			return
 		}

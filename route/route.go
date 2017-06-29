@@ -17,6 +17,9 @@ func NewRouter(t *Trie) http.Handler {
 	// r contains the real routes
 	r := mux.NewRouter()
 
+	// create command routes
+	GenerateCommandRoutes(r)
+
 	// now walk the trie and create the routes
 	generateRoutes(r, t)
 

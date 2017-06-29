@@ -4,7 +4,7 @@
   "system": {
     "source": {
       "type": "sysfs",
-      "path": "/sys/test"
+      "path": "/dev/null"
     },
     "rd-format": {
       "type": "asis",

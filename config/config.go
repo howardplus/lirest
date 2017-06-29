@@ -8,7 +8,7 @@ const (
 	DefaultPort = "8080" // the default port lirest listens on
 )
 
-// configuration definition
+// ConfigDefn definition
 type ConfigDefn struct {
 	Addr     string
 	Port     string
