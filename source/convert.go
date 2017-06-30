@@ -27,7 +27,7 @@ func ConvertValue(s string) interface{} {
 
 // NewConverter
 // Create a converter based on its type
-func NewConverter(name string, format describe.DescriptionFormat) Converter {
+func NewConverter(name string, format describe.DescriptionReadFormat) Converter {
 	switch format.Type {
 	case "separator":
 		return NewSeparatorConverter(name, format.Delimiter, format.Multiline, format.Multisection)

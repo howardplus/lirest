@@ -9,7 +9,7 @@ import (
 )
 
 // NewInjector creates an injector based on the source type
-func NewInjector(s describe.DescriptionSource, f describe.DescriptionFormat) (inject.Injector, error) {
+func NewInjector(s describe.DescriptionSource, f describe.DescriptionWriteFormat) (inject.Injector, error) {
 	var injector inject.Injector
 
 	switch s.Type {
@@ -28,11 +28,11 @@ func NewInjector(s describe.DescriptionSource, f describe.DescriptionFormat) (in
 // GenericInjector
 type GenericInjector struct {
 	path   string
-	format describe.DescriptionFormat
+	format describe.DescriptionWriteFormat
 }
 
 // NewGenericInjector
-func NewGenericInjector(path string, format describe.DescriptionFormat) *GenericInjector {
+func NewGenericInjector(path string, format describe.DescriptionWriteFormat) *GenericInjector {
 	return &GenericInjector{path: path, format: format}
 }
 
@@ -44,7 +44,7 @@ func (inj *GenericInjector) Inject(data string) error {
 	}).Info("Inject data")
 
 	// validate data first
-	if err := validate(data, inj.format); err != nil {
+	if err := NewValidator(inj.format).Validate(data); err != nil {
 		return err
 	}
 
@@ -65,9 +65,4 @@ func (inj *GenericInjector) Inject(data string) error {
 
 func (inj *GenericInjector) Name() string {
 	return inj.path
-}
-
-func validate(data string, format describe.DescriptionFormat) error {
-	// TODO: need to validate
-	return nil
 }

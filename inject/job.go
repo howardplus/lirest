@@ -1,6 +1,7 @@
 package inject
 
 import (
+	log "github.com/Sirupsen/logrus"
 	"github.com/google/uuid"
 	"github.com/howardplus/lirest/job"
 	"time"
@@ -9,11 +10,11 @@ import (
 // Job is an object that gets recorded
 // when a injection is complete
 type Job struct {
-	Execute time.Time
-	Id      uuid.UUID
-	Name    string
-	Old     string
-	Data    string
+	Execute time.Time `json:"ExecuteAt"`
+	Id      uuid.UUID `json:"Id"`
+	Name    string    `json:"WriteTo"`
+	Old     string    `json:"OldData"`
+	Data    string    `json:"NewData"`
 }
 
 // Revert implements the Job interface
@@ -55,6 +56,11 @@ func JobTracker() {
 		case job := <-newJobChan:
 			jobs = append(jobs, job)
 		case n := <-jobReqChan:
+
+			log.WithFields(log.Fields{
+				"n": n,
+			}).Debug("Request jobs")
+
 			if n != 0 && n < len(jobs) {
 				jobRespChan <- jobs[len(jobs)-n:]
 			} else {

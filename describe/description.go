@@ -98,8 +98,8 @@ type DescriptionSource struct {
 	Command string `json:"command"`
 }
 
-// DescriptionFormat
-type DescriptionFormat struct {
+// DescriptionReadFormat
+type DescriptionReadFormat struct {
 	Type                string   `json:"type"`
 	Delimiter           string   `json:"delimiter"`
 	Header              bool     `json:"header"`
@@ -112,11 +112,21 @@ type DescriptionFormat struct {
 	TitleIncludeHeading bool     `json:"titleIncludeHeading"`
 }
 
+// DescriptionWriteFormat
+type DescriptionWriteFormat struct {
+	Type      string `json:"type"`
+	Delimiter string `json:"delimiter"`
+	Multiline bool   `json:"multiline"`
+	Regex     string `json:"regex"`
+	Min       int64  `json:"min"`
+	Max       int64  `json:"max"`
+}
+
 // DescriptionSystem
 type DescriptionSystem struct {
-	Source      DescriptionSource `json:"source"`
-	ReadFormat  DescriptionFormat `json:"rd-format"`
-	WriteFormat DescriptionFormat `json:"wr-format"`
+	Source      DescriptionSource      `json:"source"`
+	ReadFormat  DescriptionReadFormat  `json:"rd-format"`
+	WriteFormat DescriptionWriteFormat `json:"wr-format"`
 }
 
 // DescriptionApi

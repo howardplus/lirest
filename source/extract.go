@@ -41,7 +41,7 @@ func NewExtractor(s describe.DescriptionSource, c Converter, vars map[string]str
 			}
 		}
 	case "":
-		// do nothing
+		// Did not specify, which implies always refresh
 	}
 
 	switch s.Type {

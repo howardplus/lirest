@@ -7,34 +7,43 @@ import (
 	"github.com/howardplus/lirest/inject"
 	"github.com/howardplus/lirest/util"
 	"net/http"
+	"strconv"
 )
 
-type GetHandler func() interface{}
-type SetHandler func(interface{}) error
+type GetHandler func(map[string]string) interface{}
+type SetHandler func(map[string]string, interface{}) error
 
 var CommandRoutes map[string]CommandHandler = map[string]CommandHandler{
 	"/jobs": CommandHandler{
-		get: func() interface{} {
+		name: "jobs",
+		get: func(vars map[string]string) interface{} {
 			return inject.RequestJobs(0)
+		},
+	},
+	"/jobs/{n:[0-9]+}": CommandHandler{
+		name: "jobs",
+		get: func(vars map[string]string) interface{} {
+			n, _ := strconv.Atoi(vars["n"])
+			return inject.RequestJobs(n)
 		},
 	},
 }
 
 type CommandHandler struct {
-	cmd string
-	get GetHandler
-	set SetHandler
+	name string
+	get  GetHandler
+	set  SetHandler
 }
 
 func GenerateCommandRoutes(r *mux.Router) error {
 
 	s := r.PathPrefix("/cmd").Subrouter()
 
-	for k, v := range CommandRoutes {
-		s.Methods("GET", "PUT").Path(k).Handler(&CommandHandler{
-			cmd: k,
-			get: v.get,
-			set: v.set,
+	for path, v := range CommandRoutes {
+		s.Methods("GET", "PUT").Path(path).Handler(&CommandHandler{
+			name: v.name,
+			get:  v.get,
+			set:  v.set,
 		})
 	}
 
@@ -45,7 +54,7 @@ func (h *CommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	log.WithFields(log.Fields{
 		"method": r.Method,
-		"cmd":    h.cmd,
+		"name":   h.name,
 	}).Info("Run command")
 
 	encoder := json.NewEncoder(w)
@@ -57,8 +66,8 @@ func (h *CommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		// add title
 		data := make(map[string]interface{}, 1)
-		data["name"] = h.cmd
-		data["data"] = h.get()
+		data["name"] = h.name
+		data["data"] = h.get(mux.Vars(r))
 
 		// encode it
 		encoder.SetIndent("", "  ")
@@ -70,7 +79,8 @@ func (h *CommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if err := h.set(nil); err != nil {
+		// TODO: how to pass in data
+		if err := h.set(mux.Vars(r), nil); err != nil {
 			encoder.Encode(err)
 		} else {
 			encoder.Encode(util.NewResultOk())
