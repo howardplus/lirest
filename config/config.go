@@ -18,6 +18,7 @@ type ConfigDefn struct {
 	Verbose  bool
 	Quiet    bool
 	Watch    bool // watch for changes in description files
+	Pretty   bool
 }
 
 var instance *ConfigDefn

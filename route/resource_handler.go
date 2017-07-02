@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
+	"github.com/howardplus/lirest/config"
 	"github.com/howardplus/lirest/describe"
 	"github.com/howardplus/lirest/source"
 	"github.com/howardplus/lirest/util"
@@ -31,7 +32,10 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", "  ")
+
+	if config.GetConfig().Pretty {
+		encoder.SetIndent("", "  ")
+	}
 
 	log.WithFields(log.Fields{
 		"method": r.Method,
@@ -85,7 +89,11 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// all good, encode the data and send back
-		encoder.Encode(output)
+		encoder.Encode(map[string]interface{}{
+			"name": output.Name,
+			"time": output.Time,
+			"data": output.Data,
+		})
 
 	case "PUT":
 		// do not support tag

@@ -16,11 +16,13 @@ type cacheMsg struct {
 
 type cacheData struct {
 	data interface{}
+	time time.Time
 	err  error
 }
 
 type cacheInternalData struct {
 	data     interface{}
+	create   time.Time
 	lastused time.Time
 	expire   time.Duration
 }
@@ -49,25 +51,28 @@ func CacheManager() {
 	for {
 		select {
 		case req := <-cacheReqChan:
+			// requesting cache data
 			if data, found := cacheMap[req]; !found || data == nil {
 				cacheDataChan <- &cacheData{
-					data: nil,
-					err:  util.NewError("Cache not found"),
+					err: util.NewError("Cache not found"),
 				}
 			} else {
 				data.lastused = time.Now()
 				cacheDataChan <- &cacheData{
 					data: data.data,
-					err:  nil,
+					time: data.create,
 				}
 			}
 		case msg := <-cacheSendChan:
+			// creating cache
 			cacheMap[msg.hash] = &cacheInternalData{
 				data:     msg.data,
 				expire:   msg.expire,
+				create:   time.Now(),
 				lastused: time.Now(),
 			}
 		case <-time.After(time.Second):
+			// timer
 			now := time.Now()
 			for k, v := range cacheMap {
 				if v.lastused.Add(v.expire).Unix() <= now.Unix() {
@@ -89,13 +94,13 @@ func CacheHash(path string) string {
 }
 
 // Cache requests cache from the cache manager
-func Cache(hash string) (interface{}, error) {
+func Cache(hash string) (interface{}, time.Time, error) {
 	// blocking call to get the hash result
 	cacheReqChan <- hash
 	if data := <-cacheDataChan; data.err != nil {
-		return nil, data.err
+		return nil, time.Unix(0, 0), data.err
 	} else {
-		return data.data, nil
+		return data.data, data.time, nil
 	}
 }
 

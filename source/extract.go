@@ -16,7 +16,13 @@ import (
 // to know where to get the data, which then feeds to the
 // converter.
 type Extractor interface {
-	Extract() (map[string]interface{}, error)
+	Extract() (*ExtractOutput, error)
+}
+
+type ExtractOutput struct {
+	Name string      `json:name`
+	Time time.Time   `json:time`
+	Data interface{} `json:data`
 }
 
 // NewExtractor create a new extractor based on the description
@@ -74,7 +80,7 @@ func NewGenericExtractor(path string, refresh time.Duration, conv Converter, var
 	return &GenericExtractor{path: path, refresh: refresh, conv: conv, vars: vars}
 }
 
-func (e *GenericExtractor) Extract() (map[string]interface{}, error) {
+func (e *GenericExtractor) Extract() (*ExtractOutput, error) {
 	log.WithFields(log.Fields{
 		"path": e.path,
 		"vars": e.vars,
@@ -90,16 +96,17 @@ func (e *GenericExtractor) Extract() (map[string]interface{}, error) {
 	var hash string
 	if e.refresh != time.Duration(0) {
 		hash = CacheHash("command" + path)
-		if data, err := Cache(hash); err == nil {
+		if data, time, err := Cache(hash); err == nil {
 
 			log.WithFields(log.Fields{
 				"hash": hash,
 				"path": e.path,
 			}).Debug("Serve from cache")
 
-			return map[string]interface{}{
-				"name": e.conv.Name(),
-				"data": data,
+			return &ExtractOutput{
+				Name: e.conv.Name(),
+				Time: time,
+				Data: data,
 			}, nil
 		}
 	}
@@ -131,10 +138,12 @@ func (e *GenericExtractor) Extract() (map[string]interface{}, error) {
 
 	log.WithFields(log.Fields{
 		"path": e.path,
+		"data": data,
 	}).Debug("Convert successful")
 
-	return map[string]interface{}{
-		"name": e.conv.Name(),
-		"data": data,
+	return &ExtractOutput{
+		Name: e.conv.Name(),
+		Time: time.Now(),
+		Data: data,
 	}, nil
 }

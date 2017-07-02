@@ -6,6 +6,7 @@ import (
 	"github.com/howardplus/lirest/util"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 // CommandExtractor
@@ -21,7 +22,7 @@ func NewCommandExtractor(cmd string, conv Converter, vars map[string]string) *Co
 	return &CommandExtractor{cmd: cmd, conv: conv, vars: vars}
 }
 
-func (e *CommandExtractor) Extract() (map[string]interface{}, error) {
+func (e *CommandExtractor) Extract() (*ExtractOutput, error) {
 	log.WithFields(log.Fields{
 		"cmd":  e.cmd,
 		"vars": e.vars,
@@ -45,11 +46,13 @@ func (e *CommandExtractor) Extract() (map[string]interface{}, error) {
 	}
 
 	log.WithFields(log.Fields{
-		"cmd": cmd,
+		"cmd":  cmd,
+		"data": data,
 	}).Debug("Convert successful")
 
-	return map[string]interface{}{
-		"name": e.conv.Name(),
-		"data": data,
+	return &ExtractOutput{
+		Name: e.conv.Name(),
+		Time: time.Now(),
+		Data: data,
 	}, nil
 }
