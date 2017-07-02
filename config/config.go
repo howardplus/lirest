@@ -12,7 +12,6 @@ const (
 type ConfigDefn struct {
 	Addr     string
 	Port     string
-	Security SecurityConfigDefn
 	DescPath string
 	DescUrl  string
 	NoSysctl bool

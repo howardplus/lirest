@@ -48,7 +48,7 @@ func (inj *GenericInjector) Inject(data string) error {
 		return err
 	}
 
-	// read old value
+	// TODO: read old value
 	old := ""
 
 	// send data to file
