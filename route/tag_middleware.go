@@ -14,11 +14,10 @@ import (
 
 const (
 	TagInfo = "_info" // describes the REST API usage
-	TagMan  = "_man"  // man page
 
 	TagHeaderName = "X-LIREST-TAG" // the HTTP tag used for the tag
 
-	tagMax = 2
+	tagMax = 1
 )
 
 var TagSupported map[string]http.HandlerFunc
@@ -28,7 +27,6 @@ func init() {
 	once.Do(func() {
 		TagSupported = make(map[string]http.HandlerFunc, tagMax)
 		TagSupported[TagInfo] = InfoHandler
-		TagSupported[TagMan] = ManHandler
 	})
 }
 
@@ -70,19 +68,6 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 	}).Debug("Add info tag")
 
 	r.Header.Set(TagHeaderName, TagInfo)
-
-	idx := strings.LastIndex(r.URL.Path, "/")
-	r.URL.Path = r.URL.Path[0:idx]
-}
-
-// ManHandler
-// the handler when man tag is found
-func ManHandler(w http.ResponseWriter, r *http.Request) {
-	log.WithFields(log.Fields{
-		"path": r.URL.Path,
-	}).Debug("Add manual tag")
-
-	r.Header.Set(TagHeaderName, TagMan)
 
 	idx := strings.LastIndex(r.URL.Path, "/")
 	r.URL.Path = r.URL.Path[0:idx]

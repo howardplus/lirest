@@ -65,10 +65,6 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			// the user uses the REST api
 			encoder.Encode(h.Api)
 			return
-		} else if tag == TagMan {
-			// man tag is free style using markdown language
-			// TODO
-			return
 		}
 
 		// create format converter
