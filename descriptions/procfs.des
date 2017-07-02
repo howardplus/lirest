@@ -7,7 +7,7 @@
       "path": "/proc/{pid}/cmdline",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "asis",
       "multiline": false
     }
@@ -28,7 +28,7 @@
   [ 
     {
       "name": "pid",
-      "data-type": "uint"
+      "dataType": "uint"
     }
   ] 
 },
@@ -40,7 +40,7 @@
       "path": "/proc/cmdline",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "asis",
       "multiline": false
     }
@@ -66,7 +66,7 @@
       "path": "/proc/cpuinfo",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "separator",
       "delimiter": ":",
       "multiline": true,
@@ -94,7 +94,7 @@
       "path": "/proc/dma",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "separator",
       "delimiter": ":",
       "multiline": true,
@@ -122,7 +122,7 @@
       "path": "/proc/filesystems",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "list",
       "header": false,
       "multiline": true,
@@ -150,7 +150,7 @@
       "path": "/proc/interrupts",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "table",
       "hasTitle": true,
       "hasHeading": true,
@@ -178,7 +178,7 @@
       "path": "/proc/kallsyms",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "list",
       "header": false,
       "multiline": true,
@@ -206,7 +206,7 @@
       "path": "/proc/meminfo",
       "refresh": "1m"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "separator",
       "delimiter": ":",
       "multiline": true,
@@ -234,7 +234,7 @@
       "path": "/proc/partitions",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "list",
       "header": true,
       "multiline": true
@@ -261,7 +261,7 @@
       "path": "/proc/swaps",
       "refresh": "1h"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "list",
       "header": true,
       "multiline": true
@@ -288,7 +288,7 @@
       "path": "/proc/uptime",
       "refresh": "always"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "list",
       "header": false,
       "title": ["uptime(s)", "idle(s)"],
@@ -316,7 +316,7 @@
       "path": "/proc/version",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "regex",
       "regex": "(.*?) version (.*?)[ \\t]\\((.*?@.*?)\\)[ \\t]\\((.*)\\)[ \\t](.*)",
       "title": ["os-type", "kernel-release", "username", "gcc-version", "kernel-version"],
@@ -344,7 +344,7 @@
       "path": "/proc/version_signature",
       "refresh": "never"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "asis",
       "multiline": false
     }

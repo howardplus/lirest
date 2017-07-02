@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/howardplus/lirest/client"
 	"github.com/howardplus/lirest/config"
 	"github.com/spf13/cobra"
 )
@@ -18,7 +18,7 @@ var jobCmd = &cobra.Command{
 	Short: "LiRest client commands",
 	Long:  `LiRest's client commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("TODO: get jobs from rest api")
+		client.JobList()
 	},
 }
 

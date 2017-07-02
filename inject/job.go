@@ -10,11 +10,11 @@ import (
 // Job is an object that gets recorded
 // when a injection is complete
 type Job struct {
-	Execute time.Time `json:"ExecuteAt"`
-	Id      uuid.UUID `json:"Id"`
-	Name    string    `json:"WriteTo"`
-	Old     string    `json:"OldData"`
-	Data    string    `json:"NewData"`
+	Id      uuid.UUID `json:"id"`
+	Execute time.Time `json:"executed"`
+	Old     string    `json:"old"`
+	Data    string    `json:"new"`
+	Name    string    `json:"writeTo"`
 }
 
 // Revert implements the Job interface

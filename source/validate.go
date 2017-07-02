@@ -15,6 +15,8 @@ func NewValidator(format describe.DescriptionWriteFormat) Validator {
 		return NewRegexValidator(format.Regex, format.Multiline)
 	case "int":
 		return NewIntValidator(format.Min, format.Max, format.Multiline)
+	case "asis":
+		return NewAsisValidator()
 	}
 
 	// by default, fail all validation

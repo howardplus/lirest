@@ -6,7 +6,7 @@
       "type": "command",
       "command": "ip route"
     },
-    "rd-format": {
+    "rdFormat": {
       "type": "line-by-line",
       "multisection": false
     }

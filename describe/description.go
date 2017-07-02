@@ -19,11 +19,15 @@ import "strconv"
 //       "path": "/proc/cpuinfo",
 //	     "refresh": "never|always|<time(s,m,h)>"
 //     },
-//     "format": {
+//     "rdFormat": {
 //       "type": "separated",
 //       "delimiter": ":",
 //       "multiline": true,
 //       "multisection": true
+//     },
+//     "wrFormat": {
+//       "type": "regex",
+//       "multiline": true
 //     }
 //   },
 //   "api": {
@@ -40,7 +44,7 @@ import "strconv"
 //   },
 //   "vars": {
 //     "pid": {
-//       "data-type": "uint",
+//       "dataType": "uint",
 //     }
 //   }
 // }
@@ -55,7 +59,7 @@ import "strconv"
 //     |              |              |- Path (string)
 //     |              |              |- Refresh (string)
 //     |              |
-//     |              |- DescriptionFormat (read)
+//     |              |- DescriptionReadFormat (read)
 //     |              |               |- Type (string)
 //     |              |               |- Delimiter (string)
 //     |              |               |- Header (bool)
@@ -64,14 +68,10 @@ import "strconv"
 //     |              |               |- Multiline (bool)
 //     |              |               |- Multisection (bool)
 //     |              |
-//     |              |- DescriptionFormat (write)
+//     |              |- DescriptionWriteFormat (write)
 //     |                              |- Type (string)
-//     |                              |- Delimiter (string)
-//     |                              |- Header (bool)
-//     |                              |- Title ([]string)
 //     |                              |- Regex (string)
 //     |                              |- Multiline (bool)
-//     |                              |- Multisection (bool)
 //     |
 //     |- DescriptionApi
 //                    |- Path (string)
@@ -125,8 +125,8 @@ type DescriptionWriteFormat struct {
 // DescriptionSystem
 type DescriptionSystem struct {
 	Source      DescriptionSource      `json:"source"`
-	ReadFormat  DescriptionReadFormat  `json:"rd-format"`
-	WriteFormat DescriptionWriteFormat `json:"wr-format"`
+	ReadFormat  DescriptionReadFormat  `json:"rdFormat"`
+	WriteFormat DescriptionWriteFormat `json:"wrFormat"`
 }
 
 // DescriptionApi
@@ -139,7 +139,7 @@ type DescriptionApi struct {
 // DescriptionVar
 type DescriptionVar struct {
 	Name     string `json:"name"`
-	DataType string `json:"data-type"`
+	DataType string `json:"dataType"`
 }
 
 // DescriptionApiDesc

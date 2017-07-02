@@ -16,31 +16,12 @@ type DescMsg struct {
 	err  error
 }
 
+const (
+	localFilename = "lirest.des"
+)
+
 // Download description files from URL
 func Download(url string, path string) error {
-	filename := "lirest.des"
-
-	// remove files from the path
-	os.Remove(path + filename)
-
-	if err := os.MkdirAll(path, 0755); err != nil {
-		log.WithFields(log.Fields{
-			"error": err.Error(),
-			"path":  path,
-		}).Error("path create error")
-		return err
-	}
-
-	out, err := os.Create(path + filename)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"error": err.Error(),
-			"path":  path + filename,
-		}).Error("file create error")
-		return err
-	}
-	defer out.Close()
-
 	resp, err := http.Get(url)
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -50,6 +31,29 @@ func Download(url string, path string) error {
 		return err
 	}
 	defer resp.Body.Close()
+
+	// TODO: support more than single file?
+
+	// remove files from the path
+	os.Remove(path + localFilename)
+
+	if err := os.MkdirAll(path, 0755); err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+			"path":  path,
+		}).Error("path create error")
+		return err
+	}
+
+	out, err := os.Create(path + localFilename)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+			"path":  path + localFilename,
+		}).Error("file create error")
+		return err
+	}
+	defer out.Close()
 
 	if _, err := io.Copy(out, resp.Body); err != nil {
 		log.Error("io error")
