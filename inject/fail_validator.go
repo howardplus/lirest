@@ -1,4 +1,4 @@
-package source
+package inject
 
 import (
 	"github.com/howardplus/lirest/util"

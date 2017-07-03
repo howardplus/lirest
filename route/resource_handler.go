@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/howardplus/lirest/config"
 	"github.com/howardplus/lirest/describe"
+	"github.com/howardplus/lirest/inject"
 	"github.com/howardplus/lirest/source"
 	"github.com/howardplus/lirest/util"
 	"net/http"
@@ -117,7 +118,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"data": data,
 		}).Info("Received user data")
 
-		injector, err := source.NewInjector(h.System.Source, h.System.WriteFormat)
+		injector, err := inject.NewInjector(h.System.Source, h.System.WriteFormat)
 		if err != nil {
 			encoder.Encode(err)
 			return

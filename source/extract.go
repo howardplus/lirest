@@ -138,7 +138,6 @@ func (e *GenericExtractor) Extract() (*ExtractOutput, error) {
 
 	log.WithFields(log.Fields{
 		"path": e.path,
-		"data": data,
 	}).Debug("Convert successful")
 
 	return &ExtractOutput{

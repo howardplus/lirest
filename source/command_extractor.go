@@ -46,8 +46,7 @@ func (e *CommandExtractor) Extract() (*ExtractOutput, error) {
 	}
 
 	log.WithFields(log.Fields{
-		"cmd":  cmd,
-		"data": data,
+		"cmd": cmd,
 	}).Debug("Convert successful")
 
 	return &ExtractOutput{

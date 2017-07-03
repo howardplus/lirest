@@ -109,7 +109,6 @@ func SendCache(hash string, data interface{}, expire time.Duration) error {
 
 	log.WithFields(log.Fields{
 		"hash":   hash,
-		"data":   data,
 		"expire": expire,
 	}).Debug("Send cache")
 
