@@ -1,4 +1,4 @@
-package lirest
+package server
 
 import (
 	log "github.com/Sirupsen/logrus"
@@ -98,7 +98,7 @@ func Run(path string, noSysctl bool, watch bool) {
 					Addr:    config.GetConfig().Addr + ":" + config.GetConfig().Port,
 					Handler: route.NewRouter(msg.trie),
 				}
-				log.Info("Running liRest server on " + srv.Addr)
+				log.Info("Running " + config.ProjectName + " server on " + srv.Addr)
 				go func() {
 					log.Info(srv.ListenAndServe())
 					serverDone <- 1

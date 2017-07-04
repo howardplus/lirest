@@ -5,6 +5,8 @@ import (
 )
 
 const (
+	// the project name
+	ProjectName = "LiREST"
 	// the default port lirest listens on
 	DefaultPort = "8080"
 )

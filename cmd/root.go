@@ -4,7 +4,7 @@ import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/howardplus/lirest/config"
-	"github.com/howardplus/lirest/lirest"
+	"github.com/howardplus/lirest/server"
 	"github.com/howardplus/lirest/util"
 	"github.com/spf13/cobra"
 )
@@ -27,18 +27,18 @@ func init() {
 
 // RootCmd define the root command
 var RootCmd = &cobra.Command{
-	Use:   "lirest",
-	Short: "liRest exposes Linux operating system using REST API",
-	Long:  "liRest exposes Linux operating system using REST API",
+	Use:   config.ProjectName,
+	Short: config.ProjectName + " exposes Linux operating system using REST API",
+	Long:  config.ProjectName + " exposes Linux operating system using REST API",
 	RunE:  runRootCmd,
 }
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of liRest",
-	Long:  `All software has versions. This is liRest's`,
+	Short: "Print the version number of " + config.ProjectName,
+	Long:  `All software has versions. This is ` + config.ProjectName + `'s`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("liRest v%d.%d\n", util.GetVersion().Major, util.GetVersion().Minor)
+		fmt.Printf("%s v%d.%d\n", config.ProjectName, util.GetVersion().Major, util.GetVersion().Minor)
 	},
 }
 
@@ -59,15 +59,15 @@ func runRootCmd(cmd *cobra.Command, args []string) error {
 			"url": conf.DescUrl,
 		}).Info("description download URL")
 
-		if err := lirest.Download(conf.DescUrl, conf.DescPath+".lirest/"); err != nil {
+		if err := server.Download(conf.DescUrl, conf.DescPath+".lirest/"); err != nil {
 			log.WithFields(log.Fields{
 				"error": err.Error(),
 			}).Error("description download failed")
 		} else {
-			lirest.Run(conf.DescPath+".lirest/", conf.NoSysctl, conf.Watch)
+			server.Run(conf.DescPath+".lirest/", conf.NoSysctl, conf.Watch)
 		}
 	} else {
-		lirest.Run(conf.DescPath, conf.NoSysctl, conf.Watch)
+		server.Run(conf.DescPath, conf.NoSysctl, conf.Watch)
 	}
 	return nil
 }

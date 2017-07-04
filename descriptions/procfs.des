@@ -385,8 +385,8 @@
     [
       {
         "method": "GET",
-        "short": "Get system version",
-        "long": "Get system version full string"
+        "short": "Get kernel version",
+        "long": "This file specifies the version of the Linux kernel, the version of gcc used to compile the kernel, and the time of kernel compilation"
       }
     ]
   }

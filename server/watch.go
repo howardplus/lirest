@@ -1,4 +1,4 @@
-package lirest
+package server
 
 import (
 	log "github.com/Sirupsen/logrus"
