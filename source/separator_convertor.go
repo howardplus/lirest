@@ -8,8 +8,7 @@ import (
 	"strings"
 )
 
-// SeparatorConverter:
-// separated by a character
+// SeparatorConverter converts data separated by a delimiter
 // typical example is ':' separated
 // key: value
 type SeparatorConverter struct {
@@ -19,15 +18,13 @@ type SeparatorConverter struct {
 	multisection bool
 }
 
-// NewSeparatorConverter
-// create a new separator
+// NewSeparatorConverter creates a new separator
 func NewSeparatorConverter(n string, s string, ml bool, ms bool) *SeparatorConverter {
 	return &SeparatorConverter{name: n, sep: s, multiline: ml, multisection: ms}
 }
 
-// ConvertLine
-// single line, separated by the separator
-func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface{}, err error) {
+// ConvertLine converts a  single line, separated by the separator
+func (c *SeparatorConverter) convertLine(in string) (key string, value interface{}, err error) {
 	parts := strings.Split(strings.Trim(in, " \t"), c.sep)
 
 	if len(parts) != 2 {
@@ -43,13 +40,12 @@ func (c *SeparatorConverter) ConvertLine(in string) (key string, value interface
 	return key, value, nil
 }
 
-// Name
+// Name returns the name of the converter
 func (c *SeparatorConverter) Name() string {
 	return c.name
 }
 
-// ConvertStream
-// stream input, read line by line
+// ConvertStream convert stream input, read line by line
 func (c *SeparatorConverter) ConvertStream(r io.Reader) (interface{}, error) {
 
 	output := make([]map[string]interface{}, 0)
@@ -75,7 +71,7 @@ func (c *SeparatorConverter) ConvertStream(r io.Reader) (interface{}, error) {
 		}
 
 		// convert line by line
-		k, v, err := c.ConvertLine(l)
+		k, v, err := c.convertLine(l)
 		if err != nil {
 			return nil, err
 		}

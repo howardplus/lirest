@@ -82,15 +82,14 @@ import "strconv"
 //                                  |- Long (string)
 //
 
-// Description
+// Description is the top level structure
 type Description struct {
 	Name   string            `json:"name"`
 	System DescriptionSystem `json:"system"`
 	Api    DescriptionApi    `json:"api"`
-	Vars   []DescriptionVar  `json:"vars"`
 }
 
-// DescriptionSource
+// DescriptionSource describes the source to be read
 type DescriptionSource struct {
 	Type    string `json:"type"`
 	Path    string `json:"path"`
@@ -98,7 +97,8 @@ type DescriptionSource struct {
 	Command string `json:"command"`
 }
 
-// DescriptionReadFormat
+// DescriptionReadFormat describes how the source
+// should be read
 type DescriptionReadFormat struct {
 	Type                string   `json:"type"`
 	Delimiter           string   `json:"delimiter"`
@@ -112,7 +112,8 @@ type DescriptionReadFormat struct {
 	TitleIncludeHeading bool     `json:"titleIncludeHeading"`
 }
 
-// DescriptionWriteFormat
+// DescriptionWriteFormat describes how the data
+// can be written
 type DescriptionWriteFormat struct {
 	Type      string `json:"type"`
 	Delimiter string `json:"delimiter"`
@@ -122,27 +123,28 @@ type DescriptionWriteFormat struct {
 	Max       int64  `json:"max"`
 }
 
-// DescriptionSystem
+// DescriptionSystem is the top level system variable descriptions
 type DescriptionSystem struct {
 	Source      DescriptionSource      `json:"source"`
 	ReadFormat  DescriptionReadFormat  `json:"rdFormat"`
 	WriteFormat DescriptionWriteFormat `json:"wrFormat"`
 }
 
-// DescriptionApi
+// DescriptionApi describes the REST api
 type DescriptionApi struct {
 	Path         string               `json:"path"`
 	Methods      []string             `json:"methods"`
 	Descriptions []DescriptionApiDesc `json:"descriptions"`
+	Vars         []DescriptionVar     `json:"vars"`
 }
 
-// DescriptionVar
+// DescriptionVar describes the REST api variables
 type DescriptionVar struct {
 	Name     string `json:"name"`
 	DataType string `json:"dataType"`
 }
 
-// DescriptionApiDesc
+// DescriptionApiDesc is used for _info documentation
 type DescriptionApiDesc struct {
 	Method string `json:"method"`
 	Short  string `json:"short"`

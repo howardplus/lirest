@@ -12,20 +12,23 @@ import (
 )
 
 const (
-	descTypeInvalid  = iota // invalid description type
-	DescTypeStandard        // standard description
-	DescTypeSysctl          // sysctl description (read from file system directly)
+	descTypeInvalid = iota // invalid description type
+
+	// DescTypeStandard is the standard description
+	DescTypeStandard
+	// DescTypeSysctl is the sysctl description (read from file system directly)
+	DescTypeSysctl
 
 	descTypeMax = 2
 
 	descFileExt = ".des" // description file extension
 )
 
+// DescType defines the type of description
+type DescType int
+
 // global sysctl descriptions
 var sysctlDesc []Description = []Description{}
-
-// DescType
-type DescType int
 
 // readDescriptions reads in descriptions from a input, typically a file
 // this is a thin wrapper whose purpose is for this to be testable
@@ -38,8 +41,7 @@ func readDescriptions(r io.Reader) ([]Description, error) {
 	return output, nil
 }
 
-// ReadDescriptionPath
-// select all files in path and read in descriptions
+// ReadDescriptionPath reads all files in path and read in descriptions
 func ReadDescriptionPath(path string, defn *DescDefn) error {
 
 	descriptions := make(map[DescType][]Description, descTypeMax)
@@ -168,7 +170,7 @@ func doSysctlFile(path string, info os.FileInfo, err error) error {
 	return nil
 }
 
-// ReadSysctlDescription read from /proc/sys filesystem
+// ReadSysctlDescriptions read from /proc/sys filesystem
 // and generate the descriptions automatically
 func ReadSysctlDescriptions(defn *DescDefn) error {
 

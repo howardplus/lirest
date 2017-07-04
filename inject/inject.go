@@ -31,17 +31,21 @@ func NewInjector(s describe.DescriptionSource, f describe.DescriptionWriteFormat
 	return nil, util.NewError("Internal error: unknown input type")
 }
 
-// GenericInjector
+// GenericInjector defines a generic injector based on write format
 type GenericInjector struct {
 	path   string
 	format describe.DescriptionWriteFormat
 }
 
-// NewGenericInjector
+// NewGenericInjector creates a new generic injector
 func NewGenericInjector(path string, format describe.DescriptionWriteFormat) *GenericInjector {
-	return &GenericInjector{path: path, format: format}
+	return &GenericInjector{
+		path:   path,
+		format: format,
+	}
 }
 
+// Inject injects data
 func (inj *GenericInjector) Inject(data string) error {
 
 	log.WithFields(log.Fields{
@@ -69,6 +73,7 @@ func (inj *GenericInjector) Inject(data string) error {
 	return nil
 }
 
+// Name returns the name of the injector
 func (inj *GenericInjector) Name() string {
 	return inj.path
 }

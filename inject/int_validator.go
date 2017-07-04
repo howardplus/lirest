@@ -6,13 +6,14 @@ import (
 	"strings"
 )
 
-// IntValidator always return fail
+// IntValidator validates integer based on min and max value
 type IntValidator struct {
 	min       int64
 	max       int64
 	multiline bool
 }
 
+// NewIntValidator creates a new integer validator
 func NewIntValidator(min int64, max int64, multiline bool) *IntValidator {
 	return &IntValidator{
 		min:       min,

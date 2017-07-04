@@ -6,8 +6,7 @@ import (
 	"time"
 )
 
-// LogMiddleware
-// the access log
+// LogMiddleware logs access
 func LogMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	now := time.Now()
 	log.WithFields(log.Fields{

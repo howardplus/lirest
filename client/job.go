@@ -7,11 +7,14 @@ import (
 	"github.com/howardplus/lirest/util"
 )
 
+// JobListData contains the job list output
 type JobListData struct {
-	Name string       `json:name`
-	Data []inject.Job `json:data`
+	Name string       `json:"name"`
+	Data []inject.Job `json:"data"`
 }
 
+// JobList returns the list of jobs where
+// data has been successfully injected
 func JobList() {
 	r, err := util.Get("jobs")
 	if err != nil {

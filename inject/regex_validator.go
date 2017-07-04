@@ -14,6 +14,7 @@ type RegexValidator struct {
 	regex     *regexp.Regexp
 }
 
+// NewRegexValidator creates a new regex validator
 func NewRegexValidator(regex string, multiline bool) *RegexValidator {
 	return &RegexValidator{
 		regex:     regexp.MustCompile(regex), // panic if failed

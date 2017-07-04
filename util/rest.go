@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// Get gets cmd via rest
 func Get(cmd string) (io.Reader, error) {
 	addr := config.GetClientConfig().Addr
 	port := config.GetClientConfig().Port
@@ -33,12 +34,6 @@ func Get(cmd string) (io.Reader, error) {
 	return bytes.NewReader(body), nil
 }
 
+// Put sets data via rest
 func Put() {
-	/*
-		reader := strings.NewReader(`{"body":123}`)
-		request, err := http.NewRequest("GET", "http://localhost:3030/foo", reader)
-		// TODO: check err
-		client := &http.Client{}
-		resp, err := client.Do(request)
-	*/
 }

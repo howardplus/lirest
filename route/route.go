@@ -9,8 +9,7 @@ import (
 	"net/http"
 )
 
-// NewRouter
-// the router is defined hierarchically
+// NewRouter creates a router defined hierarchically
 // starting from the top level
 func NewRouter(t *Trie) http.Handler {
 
@@ -87,7 +86,6 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 					desc.Name,
 					desc.System,
 					desc.Api,
-					desc.Vars,
 				})
 		}
 	} else {

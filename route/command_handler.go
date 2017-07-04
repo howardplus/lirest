@@ -11,19 +11,28 @@ import (
 	"strconv"
 )
 
+// GetHandler responds to "GET"
 type GetHandler func(map[string]string) interface{}
+
+// SetHandler responds to "PUT"
 type SetHandler func(map[string]string, interface{}) error
-type DelHandler func(map[string]string) error
+
+// NewHandler responds to "POST"
 type NewHandler func(map[string]string) error
 
-var CommandRoutes map[string]CommandHandler = map[string]CommandHandler{
-	"/jobs": CommandHandler{
+// DelHandler responds to "DELETE"
+type DelHandler func(map[string]string) error
+
+// CommandRoutes contains the list of commands supported through
+// REST api
+var commandRoutes map[string]commandHandler = map[string]commandHandler{
+	"/jobs": commandHandler{
 		name: "jobs",
 		get: func(vars map[string]string) interface{} {
 			return inject.RequestJobs(0)
 		},
 	},
-	"/jobs/{n:[0-9]+}": CommandHandler{
+	"/jobs/{n:[0-9]+}": commandHandler{
 		name: "jobs",
 		get: func(vars map[string]string) interface{} {
 			n, _ := strconv.Atoi(vars["n"])
@@ -32,30 +41,35 @@ var CommandRoutes map[string]CommandHandler = map[string]CommandHandler{
 	},
 }
 
+// all commands start with prefix "/cmd"
+const commandPrefix = "/cmd"
+
+// GenerateCommandRoutes produces routes
+// based on commandRoutes
 func GenerateCommandRoutes(r *mux.Router) error {
 
-	s := r.PathPrefix("/cmd").Subrouter()
+	s := r.PathPrefix(commandPrefix).Subrouter()
 
 	// create command routes
 	cmds := []string{}
-	for path, v := range CommandRoutes {
+	for path, v := range commandRoutes {
 		s.Methods("GET", "PUT", "POST", "DELETE").Path(path).Handler(&v)
 		cmds = append(cmds, path)
 	}
 
 	// create top level command list
-	s.Methods("GET").Path("/").Handler(&CommandRootHandler{
+	s.Methods("GET").Path("/").Handler(&commandRootHandler{
 		cmds: cmds,
 	})
 
 	return nil
 }
 
-type CommandRootHandler struct {
+type commandRootHandler struct {
 	cmds []string
 }
 
-func (h *CommandRootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *commandRootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	encoder := json.NewEncoder(w)
 
 	if config.GetConfig().Pretty {
@@ -68,7 +82,7 @@ func (h *CommandRootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-type CommandHandler struct {
+type commandHandler struct {
 	name string
 	get  GetHandler
 	set  SetHandler
@@ -76,7 +90,7 @@ type CommandHandler struct {
 	new  NewHandler
 }
 
-func (h *CommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *commandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	log.WithFields(log.Fields{
 		"method": r.Method,

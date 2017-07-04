@@ -19,10 +19,12 @@ type Extractor interface {
 	Extract() (*ExtractOutput, error)
 }
 
+// ExtractOutput is the output of the extracted data
+// with json tags
 type ExtractOutput struct {
-	Name string      `json:name`
-	Time time.Time   `json:time`
-	Data interface{} `json:data`
+	Name string      `json:"name"`
+	Time time.Time   `json:"time"`
+	Data interface{} `json:"data"`
 }
 
 // NewExtractor create a new extractor based on the description
@@ -66,7 +68,8 @@ func NewExtractor(s describe.DescriptionSource, c Converter, vars map[string]str
 	return nil, util.NewError("Internal error: unknown input type")
 }
 
-// GenericExtractor
+// GenericExtractor extract data from reading from a file
+// use this until it's not enough
 type GenericExtractor struct {
 	path    string
 	conv    Converter
@@ -74,8 +77,7 @@ type GenericExtractor struct {
 	vars    map[string]string
 }
 
-// GenericExtractor extract data from reading from a file
-// use this until it's not enough
+// NewGenericExtractor creates a GenericExtractor
 func NewGenericExtractor(path string, refresh time.Duration, conv Converter, vars map[string]string) *GenericExtractor {
 	return &GenericExtractor{path: path, refresh: refresh, conv: conv, vars: vars}
 }

@@ -4,12 +4,12 @@ import (
 	"github.com/howardplus/lirest/describe"
 )
 
+// Validate data format before injected
 type Validator interface {
-	// Validate data format
 	Validate(data string) error
 }
 
-// NewValidator create a validator to validate data for injection
+// NewValidator create a new validator based on type
 func NewValidator(format describe.DescriptionWriteFormat) Validator {
 	switch format.Type {
 	case "regex":

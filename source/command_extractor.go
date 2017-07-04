@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// CommandExtractor
+// CommandExtractor extracts data by running a command
 type CommandExtractor struct {
 	cmd  string
 	conv Converter
@@ -22,6 +22,7 @@ func NewCommandExtractor(cmd string, conv Converter, vars map[string]string) *Co
 	return &CommandExtractor{cmd: cmd, conv: conv, vars: vars}
 }
 
+// Extract extracts data by running a command
 func (e *CommandExtractor) Extract() (*ExtractOutput, error) {
 	log.WithFields(log.Fields{
 		"cmd":  e.cmd,

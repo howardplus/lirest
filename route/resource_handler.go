@@ -17,7 +17,6 @@ type ResourceHandler struct {
 	Name   string
 	System describe.DescriptionSystem
 	Api    describe.DescriptionApi
-	Vars   []describe.DescriptionVar
 }
 
 // input from POST/PUT
@@ -47,16 +46,14 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}).Debug("ResourceHandler serve")
 
 	// check type compatibility of each var
-	for _, v := range h.Vars {
+	for _, v := range h.Api.Vars {
 		varType := v.DataType
 		if val, found := vars[v.Name]; found == false {
 			encoder.Encode(util.NewError("Variable not found"))
 			return
-		} else {
-			if describe.DescriptionVarValidate(val, varType) == false {
-				encoder.Encode(util.NewError("Variable validation error"))
-				return
-			}
+		} else if !describe.DescriptionVarValidate(val, varType) {
+			encoder.Encode(util.NewError("Variable validation error"))
+			return
 		}
 	}
 

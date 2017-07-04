@@ -6,10 +6,8 @@ import (
 	"strings"
 )
 
-// Converter
-// generic convert interface
+// Converter is generic convert interface
 type Converter interface {
-
 	// Name returns the name for the converter
 	Name() string
 
@@ -18,15 +16,13 @@ type Converter interface {
 	ConvertStream(r io.Reader) (interface{}, error)
 }
 
-// ConvertValue
-// convert a value into proper formats
+// ConvertValue converts a value into proper formats
 // TODO: just a plain string for now
 func ConvertValue(s string) interface{} {
 	return strings.Trim(s, " \t")
 }
 
-// NewConverter
-// Create a converter based on its type
+// NewConverter creates a converter based on its type
 func NewConverter(name string, format describe.DescriptionReadFormat) Converter {
 	switch format.Type {
 	case "separator":

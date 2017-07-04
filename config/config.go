@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	DefaultPort = "8080" // the default port lirest listens on
+	// the default port lirest listens on
+	DefaultPort = "8080"
 )
 
 // ConfigDefn definition
@@ -24,7 +25,7 @@ type ConfigDefn struct {
 var instance *ConfigDefn
 var once sync.Once
 
-// The singleton config instance
+// GetConfig returns the singleton config instance
 func GetConfig() *ConfigDefn {
 	once.Do(func() {
 		instance = &ConfigDefn{

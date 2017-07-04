@@ -8,8 +8,7 @@ import (
 	"strings"
 )
 
-// ListConverter
-// list are values that are listed in either
+// ListConverter converts values that are listed in either
 // a single line, or multi-line
 // for example:
 // /proc/uptime contains 2 values of a single line:
@@ -20,19 +19,17 @@ type ListConverter struct {
 	multiline bool
 }
 
-// NewListConverter
-// Create a list converter
+// NewListConverter creates a new list converter
 func NewListConverter(n string, h bool, t []string, ml bool) *ListConverter {
 	return &ListConverter{name: n, header: h, title: t, multiline: ml}
 }
 
-// Name
+// Name returns name of the converter
 func (c *ListConverter) Name() string {
 	return c.name
 }
 
-// ConvertStream
-// Convert from a io.Reader
+// ConvertStream convert from a io.Reader
 func (c *ListConverter) ConvertStream(r io.Reader) (interface{}, error) {
 
 	// output is a slice of map of title to value

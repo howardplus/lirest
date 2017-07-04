@@ -1,9 +1,11 @@
 package source
 
 const (
-	ModeReadOnly  = iota // read-only value
-	ModeReadWrite        // writable value
+	// ModeReadOnly is read only
+	ModeReadOnly = iota
+	// ModeReadWrite is read/write
+	ModeReadWrite
 )
 
-// AccessMode: either read or write
+// AccessMode is either read or write
 type AccessMode int

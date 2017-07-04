@@ -25,7 +25,7 @@ func init() {
 	RootCmd.Flags().StringVarP(&config.GetConfig().DescUrl, "desc-url", "u", "", "Download URL for description files")
 }
 
-// Define the root command
+// RootCmd define the root command
 var RootCmd = &cobra.Command{
 	Use:   "lirest",
 	Short: "liRest exposes Linux operating system using REST API",

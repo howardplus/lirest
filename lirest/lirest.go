@@ -11,6 +11,8 @@ import (
 	"os"
 )
 
+// DescMsg contains the route trie that have been modified or created
+// to generate the new api routes
 type DescMsg struct {
 	trie *route.Trie
 	err  error
@@ -64,7 +66,7 @@ func Download(url string, path string) error {
 }
 
 // Run starts the lirest server
-func Run(path string, noSysctl bool, watch bool) error {
+func Run(path string, noSysctl bool, watch bool) {
 
 	routeChange := make(chan *DescMsg, 1)
 	serverDone := make(chan int, 1)
@@ -89,22 +91,19 @@ func Run(path string, noSysctl bool, watch bool) error {
 			}
 
 			if msg.err != nil {
-				log.Info("Error with descriptions")
-				return msg.err
+				log.Error("Error with descriptions")
+			} else {
+				// create a new server
+				srv = &http.Server{
+					Addr:    config.GetConfig().Addr + ":" + config.GetConfig().Port,
+					Handler: route.NewRouter(msg.trie),
+				}
+				log.Info("Running liRest server on " + srv.Addr)
+				go func() {
+					log.Info(srv.ListenAndServe())
+					serverDone <- 1
+				}()
 			}
-
-			// create a new server
-			srv = &http.Server{
-				Addr:    config.GetConfig().Addr + ":" + config.GetConfig().Port,
-				Handler: route.NewRouter(msg.trie),
-			}
-			log.Info("Running liRest server on " + srv.Addr)
-			go func() {
-				log.Info(srv.ListenAndServe())
-				serverDone <- 1
-			}()
 		}
 	}
-
-	return nil
 }

@@ -13,6 +13,7 @@ type ClientConfigDefn struct {
 var cInstance *ClientConfigDefn
 var cOnce sync.Once
 
+// GetClientConfig get global client configuration
 func GetClientConfig() *ClientConfigDefn {
 	cOnce.Do(func() {
 		cInstance = &ClientConfigDefn{

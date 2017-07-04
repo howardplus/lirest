@@ -14,17 +14,17 @@ type LBLConverter struct {
 	multisection bool
 }
 
-// LBLConverter
+// NewLBLConverter creates a new line-by-line converter
 func NewLBLConverter(n string, ms bool) *LBLConverter {
 	return &LBLConverter{name: n, multisection: ms}
 }
 
-// Name
+// Name returns the name of the converter
 func (c *LBLConverter) Name() string {
 	return c.name
 }
 
-// ConvertStream
+// ConvertStream converts data line-by-line
 func (c *LBLConverter) ConvertStream(r io.Reader) (interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)

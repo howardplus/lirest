@@ -8,6 +8,7 @@ import (
 type FailValidator struct {
 }
 
+// NewFailValidator creates a new validator that always fails
 func NewFailValidator() *FailValidator {
 	return &FailValidator{}
 }

@@ -70,7 +70,7 @@ func generateRouteTrie(path string, noSysctl bool) (*route.Trie, error) {
 		api := s.Api
 
 		vars := make(map[string]string, 0)
-		for _, v := range s.Vars {
+		for _, v := range s.Api.Vars {
 			vars[v.Name] = v.DataType
 		}
 

@@ -88,6 +88,7 @@ func CacheManager() {
 	}
 }
 
+// CacheHash retusn the hash value of the cache
 func CacheHash(path string) string {
 	sum := sha256.Sum256([]byte(path))
 	return base64.StdEncoding.EncodeToString(sum[:])
@@ -97,11 +98,12 @@ func CacheHash(path string) string {
 func Cache(hash string) (interface{}, time.Time, error) {
 	// blocking call to get the hash result
 	cacheReqChan <- hash
-	if data := <-cacheDataChan; data.err != nil {
+	data := <-cacheDataChan
+	if data.err != nil {
 		return nil, time.Unix(0, 0), data.err
-	} else {
-		return data.data, data.time, nil
 	}
+
+	return data.data, data.time, nil
 }
 
 // SendCache sends a cache result to cache manager

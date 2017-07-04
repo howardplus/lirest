@@ -10,8 +10,6 @@ import (
 // URL that starts with underscore are special tags
 // tags supported:
 // _info: describs the REST info for this url
-// _man: manual page (human-readable format) for this url
-
 const (
 	TagInfo = "_info" // describes the REST API usage
 
@@ -20,13 +18,13 @@ const (
 	tagMax = 1
 )
 
-var TagSupported map[string]http.HandlerFunc
+var tagSupported map[string]http.HandlerFunc
 var once sync.Once
 
 func init() {
 	once.Do(func() {
-		TagSupported = make(map[string]http.HandlerFunc, tagMax)
-		TagSupported[TagInfo] = InfoHandler
+		tagSupported = make(map[string]http.HandlerFunc, tagMax)
+		tagSupported[TagInfo] = infoHandler
 	})
 }
 
@@ -34,7 +32,7 @@ func init() {
 // or error if a tag is present but not found
 // or continue processing if tag is not found
 func checkTag(tag string) http.HandlerFunc {
-	for t, f := range TagSupported {
+	for t, f := range tagSupported {
 		if t == tag {
 			return f
 		}
@@ -60,9 +58,8 @@ func TagMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 	next(w, r)
 }
 
-// InfoHandler
 // the handler when info tag is found
-func InfoHandler(w http.ResponseWriter, r *http.Request) {
+func infoHandler(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"path": r.URL.Path,
 	}).Debug("Add info tag")

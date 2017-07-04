@@ -24,7 +24,7 @@ type RegexConverter struct {
 	multiline bool
 }
 
-// NewRegexConverter
+// NewRegexConverter creates a new regex converter
 func NewRegexConverter(n string, x string, title []string, ml bool) *RegexConverter {
 	return &RegexConverter{
 		name:      n,
@@ -34,12 +34,12 @@ func NewRegexConverter(n string, x string, title []string, ml bool) *RegexConver
 	}
 }
 
-// Name
+// Name returns the name of converter
 func (c *RegexConverter) Name() string {
 	return c.name
 }
 
-// ConvertStream
+// ConvertStream converts data based on the regex expression
 func (c *RegexConverter) ConvertStream(r io.Reader) (interface{}, error) {
 	line := 0
 	scanner := bufio.NewScanner(r)

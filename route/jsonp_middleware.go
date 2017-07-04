@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-// JsonpMiddleware
+// JsonpMiddleware wraps the json output with callback function name
 func JsonpMiddleware(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	cb := r.URL.Query().Get("callback")

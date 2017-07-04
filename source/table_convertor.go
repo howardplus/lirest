@@ -41,7 +41,7 @@ func (c *TableConverter) convertLine(in string) (key string, value interface{}, 
 	return "", fields, nil
 }
 
-// Name
+// Name returns name of converter
 func (c *TableConverter) Name() string {
 	return c.name
 }

@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+// FillVars fill variable values into s
 func FillVars(s string, vars map[string]string) (string, error) {
 	for k, v := range vars {
 		// TODO: add more error checking and utest
@@ -15,6 +16,8 @@ func FillVars(s string, vars map[string]string) (string, error) {
 	return s, nil
 }
 
+// PathAddType add the type string into the path string
+// this is used to display path info
 func PathAddType(path string, vars map[string]string) string {
 	last := 0
 	for k, v := range vars {

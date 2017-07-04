@@ -13,7 +13,7 @@ type VersionTag struct {
 var instance *VersionTag
 var once sync.Once
 
-// The singleton version instance
+// GetVersion is the singleton version instance
 func GetVersion() *VersionTag {
 	once.Do(func() {
 		instance = &VersionTag{
