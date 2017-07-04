@@ -16,7 +16,7 @@ import (
 type ResourceHandler struct {
 	Name   string
 	System describe.DescriptionSystem
-	Api    []describe.DescriptionApiDesc
+	Api    describe.DescriptionApi
 	Vars   []describe.DescriptionVar
 }
 
@@ -68,7 +68,10 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if tag == TagInfo {
 			// info tag describes the output format, which is how
 			// the user uses the REST api
-			encoder.Encode(h.Api)
+			encoder.Encode(map[string]interface{}{
+				"path": h.Api.Path,
+				"api":  h.Api.Descriptions,
+			})
 			return
 		}
 

@@ -3,6 +3,7 @@ package route
 import (
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
+	"github.com/howardplus/lirest/config"
 	"net/http"
 )
 
@@ -27,13 +28,13 @@ func (h *PathHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		subpath = append(subpath, sp)
 	}
 
-	// add title
-	data := make(map[string]interface{}, 1)
-	data["name"] = "subpath"
-	data["data"] = subpath
+	encoder := json.NewEncoder(w)
+	if config.GetConfig().Pretty {
+		encoder.SetIndent("", "  ")
+	}
 
 	// encode it
-	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", "  ")
-	encoder.Encode(data)
+	encoder.Encode(map[string]interface{}{
+		"subpath": subpath,
+	})
 }

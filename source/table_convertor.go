@@ -80,9 +80,8 @@ func (c *TableConverter) ConvertStream(r io.Reader) (interface{}, error) {
 			} else {
 				return nil, util.NewError("Heading expected on line")
 			}
+			row["heading"] = heading
 		}
-
-		row["heading"] = heading
 
 		// strip off the heading and send it to convertline
 		tmp := strings.Trim(strings.TrimPrefix(l, heading), " \t")

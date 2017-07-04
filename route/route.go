@@ -32,6 +32,7 @@ func NewRouter(t *Trie) http.Handler {
 		negroni.New(
 			negroni.HandlerFunc(LogMiddleware),
 			negroni.HandlerFunc(TagMiddleware),
+			negroni.HandlerFunc(JsonpMiddleware),
 			negroni.Wrap(r),
 		))
 
@@ -39,6 +40,7 @@ func NewRouter(t *Trie) http.Handler {
 	world.Methods("POST", "PUT", "DELETE").Handler(
 		negroni.New(
 			negroni.HandlerFunc(LogMiddleware),
+			negroni.HandlerFunc(JsonpMiddleware),
 			negroni.Wrap(r),
 		))
 
@@ -84,7 +86,7 @@ func traverseDepth(r *mux.Router, t *Trie, path []string) {
 				&ResourceHandler{
 					desc.Name,
 					desc.System,
-					desc.Api.Descriptions,
+					desc.Api,
 					desc.Vars,
 				})
 		}

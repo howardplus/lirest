@@ -33,6 +33,33 @@
   ] 
 },
 {
+  "name": "cgroups",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/cgroups",
+      "refresh": "1m"
+    },
+    "rdFormat": {
+      "type": "table",
+      "hasTitle": true,
+      "hasHeading": false
+    }
+  },
+  "api": {
+    "path": "/proc/cgroups",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get cgroups",
+        "long": "Get system cgroups"
+      }
+    ]
+  }
+},
+{
   "name": "cmdline",
   "system": {
     "source": {
@@ -199,6 +226,34 @@
   }
 },
 {
+  "name": "load average",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/loadavg",
+      "refresh": "always"
+    },
+    "rdFormat": {
+      "type": "list",
+      "header": false,
+      "multiline": false,
+      "title": ["1m", "5m", "15m", "cur/all entities", "last pid"]
+    }
+  },
+  "api": {
+    "path": "/proc/loadavg",
+    "methods": ["GET"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get load average",
+        "long": "The first three fields in this file are load average figures giving the number of jobs in the run queue (state R) or waiting for disk I/O (state D) averaged over 1, 5, and 15 minutes. They are the same as the load average numbers given by uptime(1) and other programs. The fourth field consists of two numbers separated by a slash (/). The first of these is the number of currently runnable kernel scheduling entities (processes, threads). The value after the slash is the number of kernel scheduling entities that currently exist on the system. The fifth field is the PID of the process that was most recently created on the system."
+      }
+    ]
+  }
+},
+{
   "name": "memory_info",
   "system": {
     "source": {
@@ -358,6 +413,33 @@
         "method": "GET",
         "short": "Get system version signature",
         "long": "Get system version signature full string"
+      }
+    ]
+  }
+},
+{
+  "name": "vmstat",
+  "system": {
+    "source": {
+      "type": "procfs",
+      "path": "/proc/vmstat",
+      "refresh": "never"
+    },
+    "rdFormat": {
+      "type": "separator",
+      "delimiter": " ",
+      "multiline": true
+    }
+  },
+  "api": {
+    "path": "/proc/vmstat",
+    "methods": ["GET"],
+    "descriptions": 
+    [
+      {
+        "method": "GET",
+        "short": "Get system memory stats",
+        "long": "Get system memory stats"
       }
     ]
   }
