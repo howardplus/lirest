@@ -16,11 +16,11 @@ import "strconv"
 //   "system": {
 //     "source": {
 //       "type": "filesystem",
-//       "path": "/proc/cpuinfo",
 //	     "refresh": "never|always|<time(s,m,h)>"
 //     },
 //     "rdFormat": {
 //       "type": "separated",
+//       "path": "/proc/cpuinfo",
 //       "delimiter": ":",
 //       "multiline": true,
 //       "multisection": true
@@ -56,11 +56,11 @@ import "strconv"
 //     |- DescriptionSystem
 //     |              |- DescriptionSource
 //     |              |              |- Type (string)
-//     |              |              |- Path (string)
 //     |              |              |- Refresh (string)
 //     |              |
 //     |              |- DescriptionReadFormat (read)
 //     |              |               |- Type (string)
+//     |              |               |- Path (string)
 //     |              |               |- Delimiter (string)
 //     |              |               |- Header (bool)
 //     |              |               |- Title ([]string)
@@ -70,6 +70,7 @@ import "strconv"
 //     |              |
 //     |              |- DescriptionWriteFormat (write)
 //     |                              |- Type (string)
+//     |                              |- Path (string)
 //     |                              |- Regex (string)
 //     |                              |- Multiline (bool)
 //     |
@@ -92,15 +93,15 @@ type Description struct {
 // DescriptionSource describes the source to be read
 type DescriptionSource struct {
 	Type    string `json:"type"`
-	Path    string `json:"path"`
 	Refresh string `json:"refresh"`
-	Command string `json:"command"`
 }
 
 // DescriptionReadFormat describes how the source
 // should be read
 type DescriptionReadFormat struct {
 	Type                string   `json:"type"`
+	Path                string   `json:"path"`
+	Command             string   `json:"command"`
 	Delimiter           string   `json:"delimiter"`
 	Header              bool     `json:"header"`
 	Title               []string `json:"title"`
@@ -116,6 +117,8 @@ type DescriptionReadFormat struct {
 // can be written
 type DescriptionWriteFormat struct {
 	Type      string `json:"type"`
+	Path      string `json:"path"`
+	Command   string `json:"command"`
 	Delimiter string `json:"delimiter"`
 	Multiline bool   `json:"multiline"`
 	Regex     string `json:"regex"`

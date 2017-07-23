@@ -4,11 +4,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/{pid}/cmdline",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "asis",
+      "path": "/proc/{pid}/cmdline",
       "multiline": false
     }
   },
@@ -37,11 +37,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/cgroups",
       "refresh": "1m"
     },
     "rdFormat": {
       "type": "table",
+      "path": "/proc/cgroups",
       "hasTitle": true,
       "hasHeading": false
     }
@@ -64,11 +64,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/cmdline",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "asis",
+      "path": "/proc/cmdline",
       "multiline": false
     }
   },
@@ -90,11 +90,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/cpuinfo",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "separator",
+      "path": "/proc/cpuinfo",
       "delimiter": ":",
       "multiline": true,
       "multisection": true
@@ -118,11 +118,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/dma",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "separator",
+      "path": "/proc/dma",
       "delimiter": ":",
       "multiline": true,
       "multisection": false
@@ -146,11 +146,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/filesystems",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/filesystems",
       "header": false,
       "multiline": true,
       "title": ["mounted", "name"]
@@ -174,11 +174,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/interrupts",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "table",
+      "path": "/proc/interrupts",
       "hasTitle": true,
       "hasHeading": true,
       "titleIncludeHeading": false
@@ -202,11 +202,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/kallsyms",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/kallsyms",
       "header": false,
       "multiline": true,
       "title": ["address", "type", "name", "module"]
@@ -230,11 +230,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/loadavg",
       "refresh": "always"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/loadavg",
       "header": false,
       "multiline": false,
       "title": ["1m", "5m", "15m", "cur/all entities", "last pid"]
@@ -258,11 +258,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/meminfo",
       "refresh": "1m"
     },
     "rdFormat": {
       "type": "separator",
+      "path": "/proc/meminfo",
       "delimiter": ":",
       "multiline": true,
       "multisection": false
@@ -286,11 +286,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/partitions",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/partitions",
       "header": true,
       "multiline": true
     }
@@ -313,11 +313,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/swaps",
       "refresh": "1h"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/swaps",
       "header": true,
       "multiline": true
     }
@@ -340,11 +340,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/uptime",
       "refresh": "always"
     },
     "rdFormat": {
       "type": "list",
+      "path": "/proc/uptime",
       "header": false,
       "title": ["uptime(s)", "idle(s)"],
       "multiline": false
@@ -368,11 +368,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/version",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "regex",
+      "path": "/proc/version",
       "regex": "(.*?) version (.*?)[ \\t]\\((.*?@.*?)\\)[ \\t]\\((.*)\\)[ \\t](.*)",
       "title": ["os-type", "kernel-release", "username", "gcc-version", "kernel-version"],
       "multiline": false
@@ -396,11 +396,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/version_signature",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "asis",
+      "path": "/proc/version_signature",
       "multiline": false
     }
   },
@@ -422,11 +422,11 @@
   "system": {
     "source": {
       "type": "procfs",
-      "path": "/proc/vmstat",
       "refresh": "never"
     },
     "rdFormat": {
       "type": "separator",
+      "path": "/proc/vmstat",
       "delimiter": " ",
       "multiline": true
     }

@@ -28,7 +28,7 @@ type ExtractOutput struct {
 }
 
 // NewExtractor create a new extractor based on the description
-func NewExtractor(s describe.DescriptionSource, c Converter, vars map[string]string) (Extractor, error) {
+func NewExtractor(s describe.DescriptionSource, rd describe.DescriptionReadFormat, c Converter, vars map[string]string) (Extractor, error) {
 	var extractor Extractor
 
 	refresh := time.Duration(0)
@@ -54,9 +54,9 @@ func NewExtractor(s describe.DescriptionSource, c Converter, vars map[string]str
 
 	switch s.Type {
 	case "procfs", "sysfs", "sysctl":
-		extractor = NewGenericExtractor(s.Path, refresh, c, vars)
+		extractor = NewGenericExtractor(rd.Path, refresh, c, vars)
 	case "command":
-		extractor = NewCommandExtractor(s.Command, c, vars)
+		extractor = NewCommandExtractor(rd.Command, c, vars)
 	}
 
 	// found an extractor, use it

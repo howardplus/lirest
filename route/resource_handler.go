@@ -28,6 +28,7 @@ type userData struct {
 // ResourceHandler's HTTP handler function
 func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s := h.System.Source
+	rd := h.System.ReadFormat
 	tag := r.Header.Get(TagHeaderName)
 	vars := mux.Vars(r)
 
@@ -76,7 +77,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		conv := source.NewConverter(h.Name, h.System.ReadFormat)
 
 		// read data from source
-		extractor, err := source.NewExtractor(s, conv, vars)
+		extractor, err := source.NewExtractor(s, rd, conv, vars)
 		if err != nil {
 			encoder.Encode(err)
 			return
@@ -115,7 +116,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		log.WithFields(log.Fields{
-			"data": data,
+			"data": data.Data,
 		}).Info("Received user data")
 
 		injector, err := inject.NewInjector(h.System.Source, h.System.WriteFormat)

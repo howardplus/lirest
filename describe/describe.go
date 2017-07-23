@@ -127,10 +127,10 @@ func doSysctlFile(path string, info os.FileInfo, err error) error {
 			System: DescriptionSystem{
 				Source: DescriptionSource{
 					Type: "sysctl",
-					Path: path,
 				},
 				ReadFormat: DescriptionReadFormat{
 					Type:      "asis",
+					Path:      path,
 					Multiline: false,
 				},
 			},
@@ -146,10 +146,10 @@ func doSysctlFile(path string, info os.FileInfo, err error) error {
 			System: DescriptionSystem{
 				Source: DescriptionSource{
 					Type: "sysctl",
-					Path: path,
 				},
 				ReadFormat: DescriptionReadFormat{
 					Type:      "asis",
+					Path:      path,
 					Multiline: false,
 				},
 				WriteFormat: DescriptionWriteFormat{

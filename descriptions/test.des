@@ -1,0 +1,35 @@
+[
+{
+  "name": "test",
+  "system": {
+    "source": {
+      "type": "command"
+    },
+    "rdFormat": {
+      "type": "asis",
+      "command": "cat /tmp/test"
+    },
+    "wrFormat": {
+      "type": "asis",
+      "command": "echo {data} > /tmp/test"
+    }
+  },
+  "api": {
+    "path": "/sys/test",
+    "methods": ["GET", "PUT"],
+    "descriptions":
+    [
+      {
+        "method": "GET",
+        "short": "Get test data",
+        "long": "Get test data from file /tmp/test"
+      },
+      {
+        "method": "PUT",
+        "short": "Set test data",
+        "long": "Set test data to file /tmp/test"
+      }
+    ]
+  }
+}
+]

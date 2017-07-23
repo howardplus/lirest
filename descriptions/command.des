@@ -3,11 +3,11 @@
   "name": "route",
   "system": {
     "source": {
-      "type": "command",
-      "command": "ip route"
+      "type": "command"
     },
     "rdFormat": {
       "type": "line-by-line",
+      "command": "ip route",
       "multisection": false
     }
   },
