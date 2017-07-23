@@ -119,7 +119,7 @@ func (h *ResourceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"data": data.Data,
 		}).Info("Received user data")
 
-		injector, err := inject.NewInjector(h.System.Source, h.System.WriteFormat)
+		injector, err := inject.NewInjector(h.System.Source, h.System.WriteFormat, vars)
 		if err != nil {
 			encoder.Encode(err)
 			return

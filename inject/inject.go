@@ -13,14 +13,14 @@ type Injector interface {
 }
 
 // NewInjector creates an injector based on the source type
-func NewInjector(s describe.DescriptionSource, f describe.DescriptionWriteFormat) (Injector, error) {
+func NewInjector(s describe.DescriptionSource, f describe.DescriptionWriteFormat, vars map[string]string) (Injector, error) {
 	var injector Injector
 
 	switch s.Type {
 	case "procfs", "sysfs", "sysctl":
-		injector = NewPathInjector(f)
+		injector = NewPathInjector(f, vars)
 	case "command":
-		injector = NewCommandInjector(f)
+		injector = NewCommandInjector(f, vars)
 	}
 
 	// found an injector, use it

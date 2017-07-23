@@ -10,12 +10,14 @@ import (
 // PathInjector defines a path injector based on write format
 type PathInjector struct {
 	format describe.DescriptionWriteFormat
+	vars   map[string]string
 }
 
 // NewPathInjector creates a new path injector
-func NewPathInjector(format describe.DescriptionWriteFormat) *PathInjector {
+func NewPathInjector(format describe.DescriptionWriteFormat, vars map[string]string) *PathInjector {
 	return &PathInjector{
 		format: format,
+		vars:   vars,
 	}
 }
 

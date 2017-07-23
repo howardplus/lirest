@@ -10,12 +10,14 @@ import (
 // CommandInjector defines a command injector based on write format
 type CommandInjector struct {
 	format describe.DescriptionWriteFormat
+	vars   map[string]string
 }
 
 // NewCommandInjector creates a new path injector
-func NewCommandInjector(format describe.DescriptionWriteFormat) *CommandInjector {
+func NewCommandInjector(format describe.DescriptionWriteFormat, vars map[string]string) *CommandInjector {
 	return &CommandInjector{
 		format: format,
+		vars:   vars,
 	}
 }
 
@@ -33,7 +35,7 @@ func (inj *CommandInjector) Inject(data string) error {
 	}
 
 	// send data to command
-	vars := make(map[string]string, 1)
+	vars := inj.vars
 	if data != "" {
 		vars["data"] = data
 	}
