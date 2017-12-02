@@ -145,6 +145,9 @@ type DescriptionApi struct {
 type DescriptionVar struct {
 	Name     string `json:"name"`
 	DataType string `json:"dataType"`
+	Regex    string `json:"regex"`
+	Min      int64  `json:"min"`
+	Max      int64  `json:"max"`
 }
 
 // DescriptionApiDesc is used for _info documentation
@@ -160,6 +163,10 @@ func DescriptionVarValidate(v string, dataType string) bool {
 	switch dataType {
 	case "uint":
 		if _, err := strconv.ParseUint(v, 10, 32); err != nil {
+			return false
+		}
+	case "int":
+		if _, err := strconv.ParseInt(v, 10, 32); err != nil {
 			return false
 		}
 	}

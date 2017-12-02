@@ -11,11 +11,11 @@
     },
     "wrFormat": {
       "type": "asis",
-      "command": "echo {data} > /tmp/test"
+      "command": "echo \"{x}:{y}:{data}\" > /tmp/test"
     }
   },
   "api": {
-    "path": "/sys/test",
+    "path": "/sys/{x}/{y}/test",
     "methods": ["GET", "PUT"],
     "descriptions":
     [
@@ -28,6 +28,17 @@
         "method": "PUT",
         "short": "Set test data",
         "long": "Set test data to file /tmp/test"
+      }
+    ],
+    "vars":
+    [
+      {
+        "name": "x",
+        "dataType": "int"
+      },
+      {
+        "name": "y",
+        "dataType": "string"
       }
     ]
   }
